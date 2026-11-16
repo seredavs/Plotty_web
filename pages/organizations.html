@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Plotty - Организации</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Lora&family=Montserrat:wght@400&display=swap"
+          rel="stylesheet">
+    <link rel="stylesheet" href="../css/main.css">
+    <link rel="stylesheet" href="../css/components.css">
+    <style>
+        /* Убираем ограничение на показ нижнего меню, чтобы оно всегда было на экране */
+        .app-layout { justify-content: center; }
+        .main-content { max-width: 1200px; margin: 0 auto; padding-left: 24px; padding-right: 24px; width: 100%; padding-bottom: 80px; }
+    </style>
+</head>
+<body>
+
+<div class="app-layout">
+    <!-- Основной контент (Левое меню удалено для чистоты интерфейса) -->
+    <main class="main-content">
+        <header class="page-header" style="margin-top: 40px;">
+            <div class="header-text">
+                <h1 class="page-title">Ваши организации</h1>
+                <p class="page-desc">Выберите команду или создайте пространство для новой истории.</p>
+            </div>
+            <button class="btn btn-primary btn-sm action-btn" id="btn-create-org">Создать организацию</button>
+        </header>
+
+        <section class="grid-section organizations-grid" id="org-grid">
+            <!-- Карточка 1 -->
+            <div class="card org-card" onclick="window.location.href='org-admin.html'">
+                <div class="org-icon">ТК</div>
+                <h3 class="card-title">Тихий кадр</h3>
+                <div class="card-meta">4 участника · 6 проектов</div>
+                <p class="card-desc">Независимое кино и истории, которые остаются с нами.</p>
+                <div class="card-footer">
+                    <div class="avatars-group">
+                        <div class="avatar bg-1">АС</div>
+                        <div class="avatar bg-2">МВ</div>
+                        <div class="avatar bg-3">ИЛ</div>
+                    </div>
+                    <span class="badge badge-accent">Директор</span>
+                </div>
+                <div class="card-action">
+                    <a href="projects.html" class="btn btn-secondary btn-block btn-sm"
+                       onclick="event.stopPropagation();">Открыть проекты</a>
+                </div>
+            </div>
+
+            <!-- Карточка 2 -->
+            <div class="card org-card" onclick="window.location.href='org-admin.html'">
+                <div class="org-icon">СМ</div>
+                <h3 class="card-title">Сценарная мастерская</h3>
+                <div class="card-meta">8 участников · 3 проекта</div>
+                <p class="card-desc">Общие идеи, разборы сценариев и творческие эксперименты.</p>
+                <div class="card-footer">
+                    <div class="avatars-group">
+                        <div class="avatar bg-1">АС</div>
+                        <div class="avatar bg-2">МВ</div>
+                        <div class="avatar bg-3">ИЛ</div>
+                    </div>
+                    <span class="badge badge-accent">Редактор</span>
+                </div>
+                <div class="card-action">
+                    <a href="projects.html" class="btn btn-secondary btn-block btn-sm"
+                       onclick="event.stopPropagation();">Открыть проекты</a>
+                </div>
+            </div>
+
+            <!-- Карточка 3 -->
+            <div class="card org-card" onclick="window.location.href='org-admin.html'">
+                <div class="org-icon">ЛП</div>
+                <h3 class="card-title">Личное пространство</h3>
+                <div class="card-meta">Только вы · 2 проекта</div>
+                <p class="card-desc">Место для первых набросков и ещё не рассказанных историй.</p>
+                <div class="card-footer">
+                    <div class="avatar bg-1">АС</div>
+                    <span class="badge badge-accent">Директор</span>
+                </div>
+                <div class="card-action">
+                    <a href="projects.html" class="btn btn-secondary btn-block btn-sm"
+                       onclick="event.stopPropagation();">Открыть проекты</a>
+                </div>
+            </div>
+        </section>
+
+        <!-- Нижний блок с недавними работами -->
+        <section class="recent-work-section">
+            <div class="card recent-list-card">
+                <h3 class="card-title">Недавняя работа</h3>
+                <ul class="recent-list">
+                    <li>
+                        <div class="list-item-content">
+                            <span class="item-title">Последний маяк</span>
+                            <span class="item-meta">Свет в тумане · обновлено сегодня, 14:32</span>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="list-item-content">
+                            <span class="item-title">Город без вывесок</span>
+                            <span class="item-meta">Первый акт · обновлено вчера, 18:10</span>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+            <div class="card promo-card">
+                <h3 class="card-title">Одна история — одна команда</h3>
+                <p class="card-desc">В каждой организации свои участники, проекты и права доступа. Пригласите соавторов,
+                    чтобы начать писать вместе.</p>
+                <a href="#" class="promo-link" id="btn-org-info">Как устроены организации →</a>
+            </div>
+        </section>
+    </main>
+</div>
+
+<!-- Глобальное прибитое меню снизу -->
+<nav class="bottom-dock">
+    <a href="profile.html" class="dock-item">Профиль</a>
+    <a href="organizations.html" class="dock-item active">Организации</a>
+    <a href="projects.html" class="dock-item">Проекты</a>
+    <a href="board.html" class="dock-item">Доска</a>
+    <a href="characters.html" class="dock-item">База</a>
+    <a href="settings.html" class="dock-item">Настройки</a>
+</nav>
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        function createOverlay() {
+            const overlay = document.createElement('div');
+            overlay.style.position = 'fixed'; overlay.style.top = '0'; overlay.style.left = '0';
+            overlay.style.width = '100%'; overlay.style.height = '100%';
+            overlay.style.backgroundColor = 'rgba(48, 39, 28, 0.5)';
+            overlay.style.zIndex = '1000'; overlay.style.display = 'flex';
+            overlay.style.alignItems = 'center'; overlay.style.justifyContent = 'center';
+            overlay.style.backdropFilter = 'blur(2px)';
+            return overlay;
+        }
+
+        function getThemeColors() {
+            const isDark = document.body.classList.contains('dark-theme');
+            return {
+                bg: isDark ? '#24211E' : '#FFFFFF',
+                text: isDark ? '#F4E9D8' : '#1A1A1A',
+                inputBg: isDark ? '#1A1816' : '#FFFFFF',
+                border: isDark ? '#302B26' : '#E8DDC7'
+            };
+        }
+
+        // Модалка: Описание организаций
+        const btnOrgInfo = document.getElementById('btn-org-info');
+        if (btnOrgInfo) {
+            btnOrgInfo.addEventListener('click', (e) => {
+                e.preventDefault();
+                const overlay = createOverlay();
+                const { bg, text, border } = getThemeColors();
+
+                const modal = document.createElement('div');
+                modal.className = 'card';
+                modal.style.cssText = `width: 440px; padding: 32px; display: flex; flex-direction: column; gap: 16px; background: ${bg}; border: 1px solid ${border}; line-height: 1.6;`;
+
+                modal.innerHTML = `
+                    <h3 style="margin: 0; color: ${text}; font-size: 20px;">Как устроены организации</h3>
+                    <div style="font-size: 14px; color: #4A3728;">
+                        <p style="margin-top: 0;">Организация — это группа пользователей, объединённая общими проектами, во главе с Директором. В каждой организации свои участники и права доступа.</p>
+                        <p><strong>Преимущества:</strong></p>
+                        <ul style="padding-left: 20px; margin-bottom: 0;">
+                            <li>Создавайте неограниченное число проектов внутри одной команды.</li>
+                            <li>Гибкое распределение ролей: Директор, Руководитель проекта, Редактор и Комментатор.</li>
+                            <li>Возможность запрашивать права на редактирование проектов внутри организации.</li>
+                            <li>Экспорт сводной таблицы по проектам и участникам.</li>
+                        </ul>
+                    </div>
+                    <div style="display: flex; justify-content: flex-end; margin-top: 8px;">
+                        <button class="btn btn-secondary btn-sm modal-close" style="background:transparent; color:${text}; border-color:${border};">Понятно</button>
+                    </div>
+                `;
+
+                modal.querySelector('.modal-close').addEventListener('click', () => overlay.remove());
+                overlay.appendChild(modal);
+                document.body.appendChild(overlay);
+            });
+        }
+
+        // Модалка: Создание организации
+        const btnCreateOrg = document.getElementById('btn-create-org');
+        if (btnCreateOrg) {
+            btnCreateOrg.addEventListener('click', () => {
+                const overlay = createOverlay();
+                const { bg, text, inputBg, border } = getThemeColors();
+
+                const modal = document.createElement('div');
+                modal.className = 'card';
+                modal.style.cssText = `width: 480px; padding: 32px; display: flex; flex-direction: column; gap: 20px; background: ${bg}; border: 1px solid ${border};`;
+
+                modal.innerHTML = `
+                    <h3 style="margin: 0; color: ${text}; font-size: 20px;">Новая организация</h3>
+                    <div class="form-group" style="margin:0;">
+                        <label class="form-label">Название организации</label>
+                        <input type="text" id="new-org-title" class="form-input" placeholder="Например: Студия «Тихий кадр»" style="background:${inputBg}; color:${text}; border-color:${border};" autofocus>
+                    </div>
+                    <div class="form-group" style="margin:0;">
+                        <label class="form-label">Описание</label>
+                        <textarea id="new-org-desc" class="form-input" placeholder="Для каких проектов создается команда?" style="height: 60px; resize: none; background:${inputBg}; color:${text}; border-color:${border};"></textarea>
+                    </div>
+
+                    <div class="meta-divider" style="margin: 8px 0;"></div>
+
+                    <div>
+                        <label class="form-label" style="margin-bottom: 12px; display: block;">Добавить недавних соавторов</label>
+                        <div style="display: flex; flex-direction: column; gap: 12px; max-height: 120px; overflow-y: auto;">
+                            <label style="display: flex; align-items: center; gap: 12px; cursor: pointer; color: ${text}; font-size: 14px;">
+                                <input type="checkbox" style="accent-color: #904D30; width: 16px; height: 16px;">
+                                <div class="avatar bg-2" style="width:24px; height:24px; font-size:10px;">ДО</div> Денис Орлов
+                            </label>
+                            <label style="display: flex; align-items: center; gap: 12px; cursor: pointer; color: ${text}; font-size: 14px;">
+                                <input type="checkbox" style="accent-color: #904D30; width: 16px; height: 16px;">
+                                <div class="avatar bg-4" style="width:24px; height:24px; font-size:10px;">ИЛ</div> Илья Лебедев
+                            </label>
+                            <label style="display: flex; align-items: center; gap: 12px; cursor: pointer; color: ${text}; font-size: 14px;">
+                                <input type="checkbox" style="accent-color: #904D30; width: 16px; height: 16px;">
+                                <div class="avatar bg-3" style="width:24px; height:24px; font-size:10px;">МВ</div> Мария Волкова
+                            </label>
+                        </div>
+                    </div>
+
+                    <div style="display: flex; gap: 12px; justify-content: flex-end; margin-top: 12px;">
+                        <button class="btn btn-secondary btn-sm modal-close" style="background:transparent; color:${text}; border-color:${border};">Отмена</button>
+                        <button class="btn btn-primary btn-sm modal-save">Создать</button>
+                    </div>
+                `;
+
+                modal.querySelector('.modal-save').addEventListener('click', () => {
+                    const title = modal.querySelector('#new-org-title').value.trim() || 'Новая организация';
+                    const desc = modal.querySelector('#new-org-desc').value.trim() || 'Описание не добавлено.';
+                    const shortName = title.substring(0, 2).toUpperCase();
+
+                    const grid = document.getElementById('org-grid');
+                    const newCard = document.createElement('div');
+                    newCard.className = 'card org-card';
+                    newCard.setAttribute('onclick', "window.location.href='org-admin.html'");
+
+                    newCard.innerHTML = `
+                        <div class="org-icon" style="background: #E4EFE3; color: #3F745C;">${shortName}</div>
+                        <h3 class="card-title">${title}</h3>
+                        <div class="card-meta">Только вы · 0 проектов</div>
+                        <p class="card-desc">${desc}</p>
+                        <div class="card-footer">
+                          <div class="avatar bg-1">АС</div>
+                          <span class="badge badge-accent">Директор</span>
+                        </div>
+                        <div class="card-action">
+                          <a href="projects.html" class="btn btn-secondary btn-block btn-sm" onclick="event.stopPropagation();">Открыть проекты</a>
+                        </div>
+                    `;
+
+                    // Добавляем в начало сетки
+                    grid.insertBefore(newCard, grid.firstChild);
+                    overlay.remove();
+                });
+
+                modal.querySelector('.modal-close').addEventListener('click', () => overlay.remove());
+                overlay.appendChild(modal);
+                document.body.appendChild(overlay);
+            });
+        }
+    });
+</script>
+</body>
+</html>

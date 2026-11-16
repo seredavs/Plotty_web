@@ -1,0 +1,610 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Plotty - Персонажи</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Lora:ital,wght@0,400;0,600;1,400&family=Montserrat:wght@400&display=swap"
+          rel="stylesheet">
+    <link rel="stylesheet" href="../css/main.css">
+    <link rel="stylesheet" href="../css/components.css">
+    <style>
+        .sidebar { transition: width 0.3s ease, min-width 0.3s ease, padding 0.3s ease; overflow: hidden; padding-top: 64px !important; }
+        .sidebar.collapsed { width: 0 !important; min-width: 0 !important; padding-left: 0; padding-right: 0; border-right: none; }
+        .toggle-sidebar-btn { position: fixed; left: 24px; top: 24px; z-index: 1000; background: #FFFCF4; border: 1px solid #E8DDC7; border-radius: 6px; padding: 6px 12px; cursor: pointer; color: #4A3728; font-size: 16px; transition: background 0.2s; }
+        .toggle-sidebar-btn:hover { background: #F0DFCE; }
+        .main-content { padding-left: 24px; box-sizing: border-box; transition: opacity 0.2s ease; }
+
+        @media (min-width: 769px) { .bottom-dock { display: none !important; } }
+
+        .back-to-global { display: flex; align-items: center; gap: 8px; color: #827568; font-size: 12px; font-weight: 500; padding: 16px; text-decoration: none; border-bottom: 1px solid #E8DDC7; transition: color 0.2s, background 0.2s; }
+        .back-to-global:hover { color: #1A1A1A; background: #F5EFE6; }
+
+        .act-toggle { cursor: pointer; display: flex; justify-content: space-between; align-items: center; user-select: none; }
+        .act-toggle:hover { background: #F5EFE6; }
+        .act-content { display: none; }
+        .act-content.expanded { display: block; }
+        .chevron { transition: transform 0.2s; font-size: 10px; color: #827568; }
+        .act-toggle.expanded .chevron { transform: rotate(90deg); }
+
+        .char-text { line-height: 1.6; margin-bottom: 8px; display: block; color: #1A1A1A; }
+        .char-subtext { line-height: 1.5; color: #827568; display: block; }
+
+        .btn-secondary.active {
+            background: #904D30 !important;
+            color: #FFFCF4 !important;
+            border-color: #904D30 !important;
+        }
+        .bottom-dock {
+    display: flex !important;
+    z-index: 9999 !important;
+}
+    </style>
+</head>
+<body>
+<button class="toggle-sidebar-btn" title="Скрыть/показать меню">☰</button>
+
+<div class="app-layout">
+    <aside class="sidebar" id="app-sidebar">
+        <a href="projects.html" class="back-to-global">
+            <span>←</span> К списку проектов
+        </a>
+
+        <div class="sidebar-section-title">ВЫБРАТЬ ПРОЕКТ</div>
+        <nav class="sidebar-nav" style="padding-bottom: 12px;">
+            <select id="project-switcher" class="form-select"
+                    style="width: 100%; background: transparent; border-color: #E8DDC7; color: #1A1A1A;">
+                <option selected>Последний маяк</option>
+                <option>Город без вывесок</option>
+            </select>
+        </nav>
+
+        <div class="sidebar-divider"></div>
+        <nav class="sidebar-nav">
+            <a href="board.html" class="sidebar-item">Доска сюжета</a>
+            <a href="history.html" class="sidebar-item">История ревизий</a>
+        </nav>
+
+        <div class="sidebar-divider"></div>
+        <div class="sidebar-section-title">СЦЕНЫ</div>
+        <nav class="sidebar-nav">
+            <div>
+                <div class="sidebar-item act-toggle expanded"><span>I. Возвращение</span> <span class="chevron">▶</span>
+                </div>
+                <div class="sidebar-sub-nav act-content expanded">
+                    <a href="scene-01.html" class="sidebar-sub-item">· 01 · Письмо отца</a>
+                    <a href="scene-02.html" class="sidebar-sub-item">· 02 · На причале</a>
+                    <a href="scene.html" class="sidebar-sub-item">· 03 · Свет в тумане</a>
+                </div>
+            </div>
+            <div>
+                <div class="sidebar-item act-toggle"><span>II. Тишина</span> <span class="chevron">▶</span></div>
+                <div class="sidebar-sub-nav act-content">
+                    <a href="scene.html" class="sidebar-sub-item">· 04 · Закрытая дверь</a>
+                    <a href="scene.html" class="sidebar-sub-item">· 05 · Старые записи</a>
+                    <a href="scene.html" class="sidebar-sub-item">· 06 · Шторм</a>
+                </div>
+            </div>
+            <div>
+                <div class="sidebar-item act-toggle"><span>III. Новый свет</span> <span class="chevron">▶</span></div>
+                <div class="sidebar-sub-nav act-content">
+                    <a href="scene.html" class="sidebar-sub-item">· 07 · Выбор Анны</a>
+                    <a href="scene.html" class="sidebar-sub-item">· 08 · Последняя ночь</a>
+                    <a href="scene.html" class="sidebar-sub-item">· 09 · Первый луч</a>
+                </div>
+            </div>
+        </nav>
+
+        <div class="sidebar-divider"></div>
+        <div class="sidebar-section-title">КОМАНДА</div>
+        <nav class="sidebar-nav">
+            <a href="org-admin.html" class="sidebar-item">Участники</a>
+        </nav>
+    </aside>
+
+    <main class="main-content" id="base-content-wrapper"
+          style="padding-top: 24px; padding-right: 32px; padding-bottom: 100px;">
+        <header class="page-header" style="margin-bottom: 24px;">
+            <div class="header-text">
+                <h1 class="page-title">Персонажи</h1>
+                <p class="page-desc" id="char-count-text">Загрузка героев...</p>
+            </div>
+            <button class="btn btn-secondary btn-sm" id="create-char-btn">Создать персонажа</button>
+        </header>
+
+        <div class="filters-bar" style="margin-bottom: 24px;">
+            <div class="search-input"><input type="text" id="char-search" placeholder="Поиск по имени…"></div>
+            <div style="display: flex; gap: 8px;">
+                <button class="btn btn-secondary btn-sm active" onclick="window.location.href='characters.html'">
+                    Персонажи
+                </button>
+                <button class="btn btn-secondary btn-sm" onclick="window.location.href='locations.html'">Локации
+                </button>
+            </div>
+            <div class="flex-spacer"></div>
+        </div>
+
+        <section class="characters-grid" id="characters-grid">
+            <!-- Персонаж 1 -->
+            <div class="character-card char-edit-trigger"
+                 style="cursor: pointer; border: 1px solid #E8DDC7; background: #FFFCF4; border-radius: 8px; padding: 16px; padding-left: 24px; position: relative;">
+                <div class="char-color-mark" style="background-color: #904D30;"></div>
+                <div class="char-header-row" style="margin-bottom: 12px;">
+                    <div class="char-title-block">
+                        <h3 class="char-name-truncate" style="margin:0; font-size: 16px; color:#1A1A1A;">Анна-Мария
+                            Морозова</h3>
+                        <span class="badge badge-accent char-role" style="align-self:flex-start; margin-top:4px;">Главная героиня</span>
+                    </div>
+                </div>
+                <div class="meta-divider" style="margin: 0 0 12px 0;"></div>
+                <div class="char-content-block">
+                    <span class="char-label" style="font-size:11px; color:#827568; margin-bottom:4px; display:block;">ЦЕЛЬ</span>
+                    <span class="char-text">Понять, почему отец остался на маяке, и найти своё место дома.</span>
+                    <span class="char-subtext"><b>Конфликт:</b> Боится повторить его выбор — и снова потерять себя.</span>
+                </div>
+                <div class="char-content-block" style="margin-top: 16px;">
+                    <span class="char-label" style="font-size:11px; color:#827568; margin-bottom:4px; display:block;">СЦЕНЫ · 9</span>
+                    <div class="tag-group" onclick="event.stopPropagation();">
+                        <a href="scene-01.html" class="badge badge-accent scene-link">01</a>
+                        <a href="scene-02.html" class="badge badge-accent scene-link">02</a>
+                        <a href="scene.html" class="badge badge-accent scene-link">03</a>
+                        <a href="scene.html" class="badge badge-accent scene-link">04</a>
+                        <a href="scene.html" class="badge badge-accent scene-link">05</a>
+                        <a href="scene.html" class="badge badge-accent scene-link">06</a>
+                        <a href="scene.html" class="badge badge-accent scene-link">07</a>
+                        <a href="scene.html" class="badge badge-accent scene-link">08</a>
+                        <a href="scene.html" class="badge badge-accent scene-link">09</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Персонаж 2 -->
+            <div class="character-card char-edit-trigger"
+                 style="cursor: pointer; border: 1px solid #E8DDC7; background: #FFFCF4; border-radius: 8px; padding: 16px; padding-left: 24px; position: relative;">
+                <div class="char-color-mark" style="background-color: #3F745C;"></div>
+                <div class="char-header-row" style="margin-bottom: 12px;">
+                    <div class="char-title-block">
+                        <h3 class="char-name-truncate" style="margin:0; font-size: 16px; color:#1A1A1A;">Илья
+                            Ветров</h3>
+                        <span class="badge badge-accent char-role" style="align-self:flex-start; margin-top:4px;">Друг детства</span>
+                    </div>
+                </div>
+                <div class="meta-divider" style="margin: 0 0 12px 0;"></div>
+                <div class="char-content-block">
+                    <span class="char-label" style="font-size:11px; color:#827568; margin-bottom:4px; display:block;">ЦЕЛЬ</span>
+                    <span class="char-text">Убедить Анну, что возвращение не обязательно означает поражение.</span>
+                    <span class="char-subtext"><b>Конфликт:</b> Хочет, чтобы она осталась, но не умеет сказать об этом.</span>
+                </div>
+                <div class="char-content-block" style="margin-top: 16px;">
+                    <span class="char-label" style="font-size:11px; color:#827568; margin-bottom:4px; display:block;">СЦЕНЫ · 3</span>
+                    <div class="tag-group" onclick="event.stopPropagation();">
+                        <a href="scene-02.html" class="badge badge-accent scene-link">02</a>
+                        <a href="scene.html" class="badge badge-accent scene-link">06</a>
+                        <a href="scene.html" class="badge badge-accent scene-link">09</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Персонаж 3 -->
+            <div class="character-card char-edit-trigger"
+                 style="cursor: pointer; border: 1px solid #E8DDC7; background: #FFFCF4; border-radius: 8px; padding: 16px; padding-left: 24px; position: relative;">
+                <div class="char-color-mark" style="background-color: #D18B69;"></div>
+                <div class="char-header-row" style="margin-bottom: 12px;">
+                    <div class="char-title-block">
+                        <h3 class="char-name-truncate" style="margin:0; font-size: 16px; color:#1A1A1A;">Сергей
+                            Котов</h3>
+                        <span class="badge badge-accent char-role" style="align-self:flex-start; margin-top:4px;">Смотритель маяка</span>
+                    </div>
+                </div>
+                <div class="meta-divider" style="margin: 0 0 12px 0;"></div>
+                <div class="char-content-block">
+                    <span class="char-label" style="font-size:11px; color:#827568; margin-bottom:4px; display:block;">ЦЕЛЬ</span>
+                    <span class="char-text">Сберечь тайну отца Анны и передать маяк в надёжные руки.</span>
+                    <span class="char-subtext"><b>Конфликт:</b> Верность обещанию мешает ему сказать правду.</span>
+                </div>
+                <div class="char-content-block" style="margin-top: 16px;">
+                    <span class="char-label" style="font-size:11px; color:#827568; margin-bottom:4px; display:block;">СЦЕНЫ · 3</span>
+                    <div class="tag-group" onclick="event.stopPropagation();">
+                        <a href="scene.html" class="badge badge-accent scene-link">03</a>
+                        <a href="scene.html" class="badge badge-accent scene-link">04</a>
+                        <a href="scene.html" class="badge badge-accent scene-link">08</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Персонаж 4 -->
+            <div class="character-card char-edit-trigger"
+                 style="cursor: pointer; border: 1px solid #E8DDC7; background: #FFFCF4; border-radius: 8px; padding: 16px; padding-left: 24px; position: relative;">
+                <div class="char-color-mark" style="background-color: #827568;"></div>
+                <div class="char-header-row" style="margin-bottom: 12px;">
+                    <div class="char-title-block">
+                        <h3 class="char-name-truncate" style="margin:0; font-size: 16px; color:#1A1A1A;">Нина
+                            Морозова</h3>
+                        <span class="badge badge-accent char-role" style="align-self:flex-start; margin-top:4px;">Тётя Анны</span>
+                    </div>
+                </div>
+                <div class="meta-divider" style="margin: 0 0 12px 0;"></div>
+                <div class="char-content-block">
+                    <span class="char-label" style="font-size:11px; color:#827568; margin-bottom:4px; display:block;">ЦЕЛЬ</span>
+                    <span class="char-text">Помочь Анне увидеть отца не героем, а живым человеком.</span>
+                    <span class="char-subtext"><b>Конфликт:</b> Слишком долго хранила чужие секреты.</span>
+                </div>
+                <div class="char-content-block" style="margin-top: 16px;">
+                    <span class="char-label" style="font-size:11px; color:#827568; margin-bottom:4px; display:block;">СЦЕНЫ · 2</span>
+                    <div class="tag-group" onclick="event.stopPropagation();">
+                        <a href="scene.html" class="badge badge-accent scene-link">05</a>
+                        <a href="scene.html" class="badge badge-accent scene-link">07</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ДЛЯ ФАЙЛА characters.html (Вставить перед закрывающим тегом </section>) -->
+
+            <!-- Доп. персонаж 9 -->
+            <div class="character-card char-edit-trigger"
+                 style="cursor: pointer; border: 1px solid #E8DDC7; background: #FFFCF4; border-radius: 8px; padding: 16px; padding-left: 24px; position: relative;">
+                <div class="char-color-mark" style="background-color: #5A7B8C;"></div>
+                <div class="char-header-row" style="margin-bottom: 12px;">
+                    <div class="char-title-block">
+                        <h3 class="char-name-truncate" style="margin:0; font-size: 16px; color:#1A1A1A;">Аркадий
+                            Борисович</h3>
+                        <span class="badge badge-accent char-role" style="align-self:flex-start; margin-top:4px;">Глава поселения</span>
+                    </div>
+                </div>
+                <div class="meta-divider" style="margin: 0 0 12px 0;"></div>
+                <div class="char-content-block">
+                    <span class="char-label" style="font-size:11px; color:#827568; margin-bottom:4px; display:block;">ЦЕЛЬ</span>
+                    <span class="char-text">Признать маяк аварийным и продать землю под строительство курортного отеля.</span>
+                    <span class="char-subtext"><b>Конфликт:</b> Боится, что Анна раскопает старые документы о махинациях его конторы 20-летней давности.</span>
+                </div>
+                <div class="char-content-block" style="margin-top: 16px;">
+                    <span class="char-label" style="font-size:11px; color:#827568; margin-bottom:4px; display:block;">СЦЕНЫ · 2</span>
+                    <div class="tag-group" onclick="event.stopPropagation();">
+                        <a href="scene.html" class="badge badge-accent scene-link">04</a>
+                        <a href="scene.html" class="badge badge-accent scene-link">07</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Доп. персонаж 10 -->
+            <div class="character-card char-edit-trigger"
+                 style="cursor: pointer; border: 1px solid #E8DDC7; background: #FFFCF4; border-radius: 8px; padding: 16px; padding-left: 24px; position: relative;">
+                <div class="char-color-mark" style="background-color: #8A9A86;"></div>
+                <div class="char-header-row" style="margin-bottom: 12px;">
+                    <div class="char-title-block">
+                        <h3 class="char-name-truncate" style="margin:0; font-size: 16px; color:#1A1A1A;">Старая
+                            Марта</h3>
+                        <span class="badge badge-accent char-role" style="align-self:flex-start; margin-top:4px;">Местная отшельница</span>
+                    </div>
+                </div>
+                <div class="meta-divider" style="margin: 0 0 12px 0;"></div>
+                <div class="char-content-block">
+                    <span class="char-label" style="font-size:11px; color:#827568; margin-bottom:4px; display:block;">ЦЕЛЬ</span>
+                    <span class="char-text">Предупредить Анну о том, что настоящая причина гибели её отца скрыта в шторме.</span>
+                    <span class="char-subtext"><b>Конфликт:</b> Из-за странного поведения и слухов ей никто в посёлке не верит.</span>
+                </div>
+                <div class="char-content-block" style="margin-top: 16px;">
+                    <span class="char-label" style="font-size:11px; color:#827568; margin-bottom:4px; display:block;">СЦЕНЫ · 1</span>
+                    <div class="tag-group" onclick="event.stopPropagation();">
+                        <a href="scene.html" class="badge badge-accent scene-link">05</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+</div>
+
+<!-- Глобальное прибитое меню снизу -->
+<nav class="bottom-dock">
+    <a href="profile.html" class="dock-item">Профиль</a>
+    <a href="organizations.html" class="dock-item">Организации</a>
+    <a href="projects.html" class="dock-item">Проекты</a>
+    <a href="board.html" class="dock-item">Доска</a>
+    <a href="characters.html" class="dock-item active">База</a>
+    <a href="settings.html" class="dock-item">Настройки</a>
+</nav>
+
+<script src="../js/ui.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        // Аккордеон
+        const actToggles = document.querySelectorAll('.act-toggle');
+        actToggles.forEach(toggle => {
+            toggle.addEventListener('click', () => {
+                toggle.classList.toggle('expanded');
+                const content = toggle.nextElementSibling;
+                if (content.classList.contains('expanded')) {
+                    content.classList.remove('expanded');
+                } else {
+                    content.classList.add('expanded');
+                }
+            });
+        });
+
+        // Анимация переключения проектов
+        const projectSwitcher = document.getElementById('project-switcher');
+        const contentWrapper = document.getElementById('base-content-wrapper');
+
+        if (projectSwitcher && contentWrapper) {
+            projectSwitcher.addEventListener('change', () => {
+                contentWrapper.style.opacity = '0.3';
+                setTimeout(() => {
+                    contentWrapper.style.opacity = '1';
+                }, 300);
+            });
+        }
+
+        const grid = document.getElementById('characters-grid');
+        const searchInput = document.getElementById('char-search');
+        const countText = document.getElementById('char-count-text');
+
+        function sortCards() {
+            const cards = Array.from(grid.querySelectorAll('.character-card'));
+            cards.sort((a, b) => {
+                const nameA = a.querySelector('.char-name-truncate').innerText.trim().toLowerCase();
+                const nameB = b.querySelector('.char-name-truncate').innerText.trim().toLowerCase();
+                return nameA.localeCompare(nameB, 'ru');
+            });
+            grid.innerHTML = '';
+            cards.forEach(card => grid.appendChild(card));
+        }
+
+        function updateCount() {
+            const visibleCards = Array.from(grid.querySelectorAll('.character-card')).filter(card => card.style.display !== 'none').length;
+
+            let word = 'героев';
+            let n = visibleCards % 10;
+            let nn = visibleCards % 100;
+            if (n === 1 && nn !== 11) word = 'герой';
+            else if (n >= 2 && n <= 4 && (nn < 10 || nn >= 20)) word = 'героя';
+
+            countText.innerText = `${visibleCards} ${word} «Последнего маяка» · Их цели, конфликты и место в истории.`;
+        }
+
+        searchInput.addEventListener('input', (e) => {
+            const query = e.target.value.toLowerCase();
+            const cards = grid.querySelectorAll('.character-card');
+            cards.forEach(card => {
+                const name = card.querySelector('.char-name-truncate').innerText.toLowerCase();
+                card.style.display = name.includes(query) ? '' : 'none';
+            });
+            updateCount();
+        });
+
+        sortCards();
+        updateCount();
+
+        function createModal(existingCard = null) {
+            let isEdit = !!existingCard;
+            let title = isEdit ? existingCard.querySelector('.char-name-truncate').innerText : '';
+            let role = isEdit ? existingCard.querySelector('.char-role').innerText : '';
+            let goalText = isEdit ? existingCard.querySelector('.char-text').innerText : '';
+
+            // Надежное извлечение отмеченных сцен
+            let checkedScenes = [];
+            if (isEdit) {
+                const links = Array.from(existingCard.querySelectorAll('.scene-link'));
+                checkedScenes = links.map(a => a.innerText.trim());
+            }
+
+            const overlay = document.createElement('div');
+            overlay.style.position = 'fixed'; overlay.style.top = '0'; overlay.style.left = '0';
+            overlay.style.width = '100%'; overlay.style.height = '100%';
+            overlay.style.backgroundColor = 'rgba(48, 39, 28, 0.5)';
+            overlay.style.zIndex = '1000'; overlay.style.display = 'flex';
+            overlay.style.alignItems = 'center'; overlay.style.justifyContent = 'center';
+            overlay.style.backdropFilter = 'blur(2px)';
+
+            const modal = document.createElement('div');
+            modal.className = 'card';
+            modal.style.width = '480px'; modal.style.padding = '32px';
+            modal.style.display = 'flex'; modal.style.flexDirection = 'column'; modal.style.gap = '20px';
+            modal.style.background = '#FFFCF4';
+
+            modal.innerHTML = `
+                <h3 style="margin: 0; font-size: 20px; color: #1A1A1A;">${isEdit ? 'Редактировать персонажа' : 'Новый персонаж'}</h3>
+
+                <div style="display: flex; gap: 12px; align-items: flex-end;">
+                     <div class="form-group" style="flex: 1; margin: 0;">
+                        <label class="form-label" style="color: #827568;">Имя персонажа</label>
+                        <input type="text" id="modal-name" class="form-input" value="${title}" placeholder="Имя и фамилия" autofocus>
+                     </div>
+                     <div class="form-group" style="width: 170px; margin: 0;">
+                        <label class="form-label" style="color: #827568;">Цвет</label>
+                        <select class="form-select" id="modal-color" style="padding-left: 8px;">
+                            <option value="#904D30">🟤 Коричневый</option>
+                            <option value="#D18B69">🟠 Терракотовый</option>
+                            <option value="#B39B78">🟡 Песочный</option>
+                            <option value="#3F745C">🟢 Хвойный</option>
+                            <option value="#8A9A86">🌿 Шалфейный</option>
+                            <option value="#5A7B8C">🔵 Сизый</option>
+                            <option value="#3B4A59">🌑 Графитовый</option>
+                            <option value="#8C5A65">🟣 Пыльно-розовый</option>
+                            <option value="#C2A895">🧋 Латте</option>
+                            <option value="#827568">⚪ Серый</option>
+                        </select>
+                     </div>
+                </div>
+
+                <div class="form-group" style="margin: 0;">
+                    <label class="form-label" style="color: #827568;">Роль в сюжете</label>
+                    <input type="text" id="modal-role" class="form-input" value="${role}" placeholder="Например: Друг детства">
+                </div>
+
+                <div class="form-group" style="margin: 0;">
+                    <label class="form-label" style="color: #827568;">Цель</label>
+                    <textarea id="modal-goal" class="form-input" placeholder="Чего он хочет достичь?" style="height: 64px; resize: none; padding: 10px 12px; font-family: inherit;">${goalText}</textarea>
+                </div>
+
+                <div class="form-group" style="margin: 0;">
+                    <label class="form-label" style="color: #827568;">Внутренний конфликт</label>
+                    <input type="text" id="modal-conflict" class="form-input" placeholder="Его главная слабость или страх">
+                </div>
+
+                <div class="form-group" style="margin: 0;">
+                    <label class="form-label" style="color: #827568; margin-bottom: 8px; display: block;">Участвует в сценах</label>
+                    <div style="background: #F5EFE6; padding: 12px; border-radius: 6px; border: 1px solid #E8DDC7; max-height: 160px; overflow-y: auto;">
+                        <div style="font-size: 11px; font-weight: 600; color: #827568; margin-bottom: 6px;">Акт I. Возвращение</div>
+                        <div style="display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 12px;">
+                            <label style="color: #1A1A1A; font-size: 13px; display: flex; align-items: center; gap: 4px; cursor: pointer;"><input type="checkbox" id="c-sc-01" ${checkedScenes.includes('01') ? 'checked' : ''}> 01</label>
+                            <label style="color: #1A1A1A; font-size: 13px; display: flex; align-items: center; gap: 4px; cursor: pointer;"><input type="checkbox" id="c-sc-02" ${checkedScenes.includes('02') ? 'checked' : ''}> 02</label>
+                            <label style="color: #1A1A1A; font-size: 13px; display: flex; align-items: center; gap: 4px; cursor: pointer;"><input type="checkbox" id="c-sc-03" ${checkedScenes.includes('03') ? 'checked' : ''}> 03</label>
+                        </div>
+                        <div style="font-size: 11px; font-weight: 600; color: #827568; margin-bottom: 6px;">Акт II. Тишина</div>
+                        <div style="display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 12px;">
+                            <label style="color: #1A1A1A; font-size: 13px; display: flex; align-items: center; gap: 4px; cursor: pointer;"><input type="checkbox" id="c-sc-04" ${checkedScenes.includes('04') ? 'checked' : ''}> 04</label>
+                            <label style="color: #1A1A1A; font-size: 13px; display: flex; align-items: center; gap: 4px; cursor: pointer;"><input type="checkbox" id="c-sc-05" ${checkedScenes.includes('05') ? 'checked' : ''}> 05</label>
+                            <label style="color: #1A1A1A; font-size: 13px; display: flex; align-items: center; gap: 4px; cursor: pointer;"><input type="checkbox" id="c-sc-06" ${checkedScenes.includes('06') ? 'checked' : ''}> 06</label>
+                        </div>
+                        <div style="font-size: 11px; font-weight: 600; color: #827568; margin-bottom: 6px;">Акт III. Новый свет</div>
+                        <div style="display: flex; gap: 12px; flex-wrap: wrap;">
+                            <label style="color: #1A1A1A; font-size: 13px; display: flex; align-items: center; gap: 4px; cursor: pointer;"><input type="checkbox" id="c-sc-07" ${checkedScenes.includes('07') ? 'checked' : ''}> 07</label>
+                            <label style="color: #1A1A1A; font-size: 13px; display: flex; align-items: center; gap: 4px; cursor: pointer;"><input type="checkbox" id="c-sc-08" ${checkedScenes.includes('08') ? 'checked' : ''}> 08</label>
+                            <label style="color: #1A1A1A; font-size: 13px; display: flex; align-items: center; gap: 4px; cursor: pointer;"><input type="checkbox" id="c-sc-09" ${checkedScenes.includes('09') ? 'checked' : ''}> 09</label>
+                        </div>
+                    </div>
+                </div>
+
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 16px; padding-top: 16px; border-top: 1px solid #E8DDC7;">
+                    <div>
+                        ${isEdit ? '<button class="text-btn modal-delete" style="color: #C64343; font-size: 13px; border: none; background: transparent; cursor: pointer; padding: 0; font-weight: 500;">Удалить персонажа</button>' : ''}
+                    </div>
+                    <div style="display: flex; gap: 12px;">
+                        <button class="btn btn-secondary btn-sm modal-close">Отмена</button>
+                        <button class="btn btn-primary btn-sm modal-save">Сохранить</button>
+                    </div>
+                </div>
+            `;
+
+            modal.querySelector('.modal-close').addEventListener('click', () => overlay.remove());
+
+            // КАСКАДНОЕ УДАЛЕНИЕ ПЕРСОНАЖА
+            if (isEdit) {
+                modal.querySelector('.modal-delete').addEventListener('click', (e) => {
+                    e.preventDefault();
+
+                    const confirmOverlay = document.createElement('div');
+                    confirmOverlay.style.position = 'fixed'; confirmOverlay.style.top = '0'; confirmOverlay.style.left = '0';
+                    confirmOverlay.style.width = '100%'; confirmOverlay.style.height = '100%';
+                    confirmOverlay.style.backgroundColor = 'rgba(48, 39, 28, 0.4)';
+                    confirmOverlay.style.zIndex = '1010'; confirmOverlay.style.display = 'flex';
+                    confirmOverlay.style.alignItems = 'center'; confirmOverlay.style.justifyContent = 'center';
+                    confirmOverlay.style.backdropFilter = 'blur(4px)';
+
+                    const confirmModal = document.createElement('div');
+                    confirmModal.className = 'card';
+                    confirmModal.style.width = '360px'; confirmModal.style.padding = '32px';
+                    confirmModal.style.display = 'flex'; confirmModal.style.flexDirection = 'column'; confirmModal.style.gap = '16px';
+                    confirmModal.style.background = '#FFFCF4';
+                    confirmModal.style.textAlign = 'center';
+                    confirmModal.style.boxShadow = '0 12px 48px rgba(74, 55, 40, 0.15)';
+
+                    confirmModal.innerHTML = `
+                        <h3 style="margin: 0; font-size: 20px; color: #1A1A1A;">Удалить персонажа?</h3>
+                        <p style="margin: 0; font-size: 14px; color: #4A3728; line-height: 1.5;">
+                            Вы уверены, что хотите удалить <b>«${title}»</b>?<br>Это действие нельзя отменить.
+                        </p>
+                        <div style="display: flex; gap: 12px; justify-content: center; margin-top: 16px;">
+                            <button class="btn btn-secondary btn-sm confirm-cancel">Отмена</button>
+                            <button class="btn btn-primary btn-sm confirm-delete" style="background: #C64343; border-color: #C64343;">Удалить навсегда</button>
+                        </div>
+                    `;
+
+                    confirmModal.querySelector('.confirm-cancel').addEventListener('click', () => confirmOverlay.remove());
+
+                    confirmModal.querySelector('.confirm-delete').addEventListener('click', () => {
+                        existingCard.remove();
+                        confirmOverlay.remove();
+                        overlay.remove();
+                        updateCount();
+                    });
+
+                    confirmOverlay.appendChild(confirmModal);
+                    document.body.appendChild(confirmOverlay);
+                });
+            }
+
+            modal.querySelector('.modal-save').addEventListener('click', () => {
+                const newName = modal.querySelector('#modal-name').value || 'Новый персонаж';
+                const newRole = modal.querySelector('#modal-role').value || 'Роль неизвестна';
+                const newGoal = modal.querySelector('#modal-goal').value || '...';
+                const newConflict = modal.querySelector('#modal-conflict').value || '...';
+                const newColor = modal.querySelector('#modal-color').value;
+
+                let tagsHTML = '';
+                if(modal.querySelector('#c-sc-01').checked) tagsHTML += '<a href="scene-01.html" class="badge badge-accent scene-link">01</a> ';
+                if(modal.querySelector('#c-sc-02').checked) tagsHTML += '<a href="scene-02.html" class="badge badge-accent scene-link">02</a> ';
+                if(modal.querySelector('#c-sc-03').checked) tagsHTML += '<a href="scene.html" class="badge badge-accent scene-link">03</a> ';
+                if(modal.querySelector('#c-sc-04').checked) tagsHTML += '<a href="scene.html" class="badge badge-accent scene-link">04</a> ';
+                if(modal.querySelector('#c-sc-05').checked) tagsHTML += '<a href="scene.html" class="badge badge-accent scene-link">05</a> ';
+                if(modal.querySelector('#c-sc-06').checked) tagsHTML += '<a href="scene.html" class="badge badge-accent scene-link">06</a> ';
+                if(modal.querySelector('#c-sc-07').checked) tagsHTML += '<a href="scene.html" class="badge badge-accent scene-link">07</a> ';
+                if(modal.querySelector('#c-sc-08').checked) tagsHTML += '<a href="scene.html" class="badge badge-accent scene-link">08</a> ';
+                if(modal.querySelector('#c-sc-09').checked) tagsHTML += '<a href="scene.html" class="badge badge-accent scene-link">09</a> ';
+
+                let sceneCount = tagsHTML.split('</a>').length - 1;
+
+                if (isEdit) {
+                    existingCard.querySelector('.char-name-truncate').innerText = newName;
+                    existingCard.querySelector('.char-role').innerText = newRole;
+                    existingCard.querySelector('.char-text').innerText = newGoal;
+                    existingCard.querySelector('.char-color-mark').style.backgroundColor = newColor;
+                    existingCard.querySelector('.tag-group').innerHTML = tagsHTML;
+                    // Обновляем кол-во сцен в карточке
+                    existingCard.querySelectorAll('.char-label')[1].innerText = `СЦЕНЫ · ${sceneCount}`;
+                } else {
+                    const newCard = document.createElement('div');
+                    newCard.className = 'character-card char-edit-trigger';
+                    newCard.style.cssText = 'cursor: pointer; border: 1px solid #E8DDC7; background: #FFFCF4; border-radius: 8px; padding: 16px; padding-left: 24px; position: relative;';
+
+                    newCard.innerHTML = `
+                        <div class="char-color-mark" style="background-color: ${newColor};"></div>
+                        <div class="char-header-row" style="margin-bottom: 12px;">
+                            <div class="char-title-block">
+                                <h3 class="char-name-truncate" style="margin:0; font-size: 16px; color:#1A1A1A;">${newName}</h3>
+                                <span class="badge badge-accent char-role" style="align-self:flex-start; margin-top:4px;">${newRole}</span>
+                            </div>
+                        </div>
+                        <div class="meta-divider" style="margin: 0 0 12px 0;"></div>
+                        <div class="char-content-block">
+                            <span class="char-label" style="font-size:11px; color:#827568; margin-bottom:4px; display:block;">ЦЕЛЬ</span>
+                            <span class="char-text">${newGoal}</span>
+                            <span class="char-subtext"><b>Конфликт:</b> ${newConflict}</span>
+                        </div>
+                        <div class="char-content-block" style="margin-top: 16px;">
+                            <span class="char-label" style="font-size:11px; color:#827568; margin-bottom:4px; display:block;">СЦЕНЫ · ${sceneCount}</span>
+                            <div class="tag-group" onclick="event.stopPropagation();">
+                                ${tagsHTML}
+                            </div>
+                        </div>
+                    `;
+                    grid.appendChild(newCard);
+                }
+
+                overlay.remove();
+                sortCards();
+                updateCount();
+            });
+
+            overlay.appendChild(modal);
+            document.body.appendChild(overlay);
+        }
+
+        const createBtn = document.getElementById('create-char-btn');
+        if(createBtn) {
+            createBtn.addEventListener('click', (e) => {
+                e.preventDefault();
+                createModal(null);
+            });
+        }
+
+        grid.addEventListener('click', (e) => {
+            const card = e.target.closest('.char-edit-trigger');
+            if (card && !e.target.closest('.scene-link')) {
+                createModal(card);
+            }
+        });
+    });
+</script>
+</body>
+</html>

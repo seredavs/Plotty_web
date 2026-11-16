@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Plotty - Стартовый экран</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Lora&family=Montserrat:wght@400&display=swap" rel="stylesheet">
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            background-color: #FAFAFA;
+        }
+
+        .hero-container {
+            width: 100%;
+            max-width: 1440px;
+            padding: 32px 120px 48px 64px;
+            box-sizing: border-box;
+            display: flex;
+            align-items: center;
+            gap: 120px;
+        }
+
+        /* Левая карточка с изображением */
+        .image-card {
+            width: 610px;
+            height: 700px;
+            padding: 44px;
+            position: relative;
+            box-shadow: 0px 8px 28px rgba(74, 55, 40, 0.05);
+            border-radius: 20px;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            gap: 20px;
+            box-sizing: border-box;
+            overflow: hidden;
+        }
+
+        .image-card img {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            z-index: 1;
+        }
+
+        .image-card .gradient-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(180deg, rgba(74, 55, 40, 0) 0%, rgba(48, 39, 28, 0.87) 100%);
+            z-index: 2;
+        }
+
+        .image-card-content {
+            position: relative;
+            z-index: 3;
+            color: #FFFCF4;
+        }
+
+        .image-card-title {
+            font-family: 'Lora', serif;
+            font-size: 34px;
+            line-height: 1.3;
+            margin-bottom: 20px;
+        }
+
+        .image-card-desc {
+            color: #F0DFCE;
+            font-family: 'Inter', sans-serif;
+            font-size: 14px;
+            margin-bottom: 20px;
+        }
+
+        .image-card-subtitle {
+            color: #F0DFCE;
+            font-family: 'Inter', sans-serif;
+            font-size: 11px;
+            letter-spacing: 0.5px;
+        }
+
+        /* Правая часть с контентом */
+        .content-section {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 32px;
+        }
+
+        .text-block {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .tag {
+            color: #904D30;
+            font-family: 'Inter', sans-serif;
+            font-size: 11px;
+            font-weight: 500;
+        }
+
+        .main-heading {
+            color: #4A3728;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 40px;
+            line-height: 1.25;
+            margin: 0;
+        }
+
+        .main-desc {
+            color: #827568;
+            font-family: 'Inter', sans-serif;
+            font-size: 16px;
+            line-height: 1.6;
+        }
+
+        /* Кнопки */
+        .actions {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .btn {
+            height: 48px;
+            border-radius: 8px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-family: 'Inter', sans-serif;
+            font-size: 14px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.2s ease-in-out;
+            cursor: pointer;
+        }
+
+        .btn-primary {
+            background: #904D30;
+            color: #FFFCF4;
+            border: 1px solid #904D30;
+        }
+
+        .btn-primary:hover {
+            background: #7A4128;
+        }
+
+        .btn-secondary {
+            background: #FFFCF4;
+            color: #4A3728;
+            border: 1px solid #E8DDC7;
+        }
+
+        .btn-secondary:hover {
+            background: #F5EFE6;
+        }
+
+        /* Футер фичи */
+        .features {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .divider {
+            height: 1px;
+            background: #E8DDC7;
+            width: 100%;
+        }
+
+        .feature-list {
+            display: flex;
+            gap: 24px;
+        }
+
+        .feature-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: #827568;
+            font-family: 'Inter', sans-serif;
+            font-size: 12px;
+        }
+
+        .icon-placeholder {
+            width: 16px;
+            height: 16px;
+            border: 1.5px solid #904D30;
+            border-radius: 2px;
+            box-sizing: border-box;
+        }
+    </style>
+</head>
+<body>
+
+<div class="hero-container">
+
+    <div class="image-card">
+        <img src="https://placehold.co/610x700/4A3728/FFFCF4?text=Plotty+Cover" alt="Обложка Plotty" />
+        <div class="gradient-overlay"></div>
+        <div class="image-card-content">
+            <div class="image-card-title">У каждой истории есть начало.</div>
+            <div class="image-card-desc">От первой идеи до последней сцены — вместе с Plotty.</div>
+            <div class="image-card-subtitle">PLOTTY / ПРОСТРАНСТВО ДЛЯ ИСТОРИЙ</div>
+        </div>
+    </div>
+
+    <div class="content-section">
+        <div class="text-block">
+            <div class="tag">ДЛЯ ТЕХ, КТО СОЗДАЁТ ИСТОРИИ</div>
+            <h1 class="main-heading">Ваша история.<br/>Всё на своих местах.</h1>
+            <div class="main-desc">Структурируйте сюжет, развивайте персонажей и пишите сценарии в одном творческом пространстве.</div>
+        </div>
+
+        <div class="actions">
+            <!-- Сюда мы позже добавим ссылку на страницу регистрации -->
+            <a href="#" class="btn btn-primary">Регистрация →</a>
+            <a href="#" class="btn btn-secondary">Вход</a>
+        </div>
+
+        <div class="features">
+            <div class="divider"></div>
+            <div class="feature-list">
+                <div class="feature-item">
+                    <div class="icon-placeholder"></div>
+                    Доска сюжета
+                </div>
+                <div class="feature-item">
+                    <div class="icon-placeholder"></div>
+                    Персонажи
+                </div>
+                <div class="feature-item">
+                    <div class="icon-placeholder"></div>
+                    Сценарий
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+</body>
+</html>

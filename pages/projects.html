@@ -1,0 +1,578 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Plotty - Все проекты</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Lora:ital,wght@0,400;0,600;1,400&family=Montserrat:wght@400&display=swap"
+          rel="stylesheet">
+    <link rel="stylesheet" href="../css/main.css">
+    <link rel="stylesheet" href="../css/components.css">
+    <style>
+        .sidebar { transition: width 0.3s ease, min-width 0.3s ease, padding 0.3s ease; overflow: hidden; padding-top: 64px !important; }
+        .sidebar.collapsed { width: 0 !important; min-width: 0 !important; padding-left: 0; padding-right: 0; border-right: none; }
+        .toggle-sidebar-btn { position: fixed; left: 24px; top: 24px; z-index: 1000; background: #FFFCF4; border: 1px solid #E8DDC7; border-radius: 6px; padding: 6px 12px; cursor: pointer; color: #4A3728; font-size: 16px; transition: background 0.2s; }
+        .toggle-sidebar-btn:hover { background: #F0DFCE; }
+        .main-content { padding-left: 24px; box-sizing: border-box; transition: opacity 0.2s ease; }
+
+        .back-to-global { display: flex; align-items: center; gap: 8px; color: #827568; font-size: 12px; font-weight: 500; padding: 16px; text-decoration: none; border-bottom: 1px solid #E8DDC7; transition: color 0.2s, background 0.2s; }
+        .back-to-global:hover { color: #1A1A1A; background: #F5EFE6; }
+
+        .act-toggle { cursor: pointer; display: flex; justify-content: space-between; align-items: center; user-select: none; }
+        .act-toggle:hover { background: #F5EFE6; }
+        .act-content { display: none; }
+        .act-content.expanded { display: block; }
+        .chevron { transition: transform 0.2s; font-size: 10px; color: #827568; }
+        .act-toggle.expanded .chevron { transform: rotate(90deg); }
+
+        .projects-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 24px; align-items: stretch; }
+
+        .project-card { text-decoration: none; color: inherit; display: flex; flex-direction: column; border: 1px solid #E8DDC7; transition: border-color 0.2s, box-shadow 0.2s, transform 0.2s; overflow: hidden; padding: 0; background: #FFFCF4; border-radius: 8px; position: relative;}
+        .project-card:hover { border-color: #904D30; box-shadow: 0 8px 24px rgba(144, 77, 48, 0.08); transform: translateY(-2px); }
+
+        .project-cover { height: 140px; width: 100%; object-fit: cover; border-bottom: 1px solid #E8DDC7; }
+        .project-body { padding: 20px; display: flex; flex-direction: column; gap: 12px; flex: 1; }
+        .project-footer { display: flex; justify-content: space-between; align-items: center; margin-top: auto; padding-top: 16px; border-top: 1px dashed #E8DDC7; }
+
+        /* Кнопка удаления проекта */
+        .btn-delete-project { position: absolute; top: 12px; right: 12px; background: rgba(0, 0, 0, 0.5); color: #FFF; border: none; width: 28px; height: 28px; border-radius: 50%; display: flex; justify-content: center; align-items: center; cursor: pointer; opacity: 0; transition: opacity 0.2s, background 0.2s; font-size: 14px; line-height: 1; }
+        .project-card:hover .btn-delete-project { opacity: 1; }
+        .btn-delete-project:hover { background: #C64343; }
+    </style>
+</head>
+<body>
+
+<button class="toggle-sidebar-btn" title="Скрыть/показать меню">☰</button>
+
+<div class="app-layout">
+    <!-- Левое меню (Идентично сценам/локациям/истории) -->
+    <aside class="sidebar" id="app-sidebar">
+        <a href="organizations.html" class="back-to-global">
+            <span>←</span> К списку организаций
+        </a>
+
+        <div class="sidebar-section-title">ВЫБРАТЬ ПРОЕКТ</div>
+        <nav class="sidebar-nav" style="padding-bottom: 12px;">
+            <select id="project-switcher" class="form-select"
+                    style="width: 100%; background: transparent; border-color: #E8DDC7; color: #1A1A1A;">
+                <option selected>Последний маяк</option>
+                <option>Тайны старого города</option>
+                <option>Короткий метр</option>
+            </select>
+        </nav>
+
+        <div class="sidebar-divider"></div>
+        <nav class="sidebar-nav">
+            <a href="board.html" class="sidebar-item">Доска сюжета</a>
+            <a href="history.html" class="sidebar-item">История ревизий</a>
+        </nav>
+
+        <div class="sidebar-divider"></div>
+        <div class="sidebar-section-title">СЦЕНЫ</div>
+        <nav class="sidebar-nav">
+            <div>
+                <div class="sidebar-item act-toggle expanded"><span>I. Возвращение</span> <span class="chevron">▶</span>
+                </div>
+                <div class="sidebar-sub-nav act-content expanded">
+                    <a href="scene-01.html" class="sidebar-sub-item">· 01 · Письмо отца</a>
+                    <a href="scene-02.html" class="sidebar-sub-item">· 02 · На причале</a>
+                    <a href="scene.html" class="sidebar-sub-item">· 03 · Свет в тумане</a>
+                </div>
+            </div>
+            <div>
+                <div class="sidebar-item act-toggle"><span>II. Тишина</span> <span class="chevron">▶</span></div>
+                <div class="sidebar-sub-nav act-content">
+                    <a href="scene.html" class="sidebar-sub-item">· 04 · Закрытая дверь</a>
+                    <a href="scene.html" class="sidebar-sub-item">· 05 · Старые записи</a>
+                    <a href="scene.html" class="sidebar-sub-item">· 06 · Шторм</a>
+                </div>
+            </div>
+            <div>
+                <div class="sidebar-item act-toggle"><span>III. Новый свет</span> <span class="chevron">▶</span></div>
+                <div class="sidebar-sub-nav act-content">
+                    <a href="scene.html" class="sidebar-sub-item">· 07 · Выбор Анны</a>
+                    <a href="scene.html" class="sidebar-sub-item">· 08 · Последняя ночь</a>
+                    <a href="scene.html" class="sidebar-sub-item">· 09 · Первый луч</a>
+                </div>
+            </div>
+        </nav>
+
+        <div class="sidebar-divider"></div>
+        <div class="sidebar-section-title">КОМАНДА</div>
+        <nav class="sidebar-nav">
+            <a href="participants.html" class="sidebar-item">Участники</a>
+        </nav>
+    </aside>
+
+    <main class="main-content" id="base-content-wrapper"
+          style="padding-top: 24px; padding-right: 32px; padding-bottom: 100px;">
+        <header class="page-header" style="margin-bottom: 24px;">
+            <div class="header-text">
+                <h1 class="page-title">Все проекты</h1>
+                <p class="page-desc">Сценарии, черновики и идеи в вашем рабочем пространстве.</p>
+            </div>
+            <button class="btn btn-primary btn-sm" id="create-project-btn">Создать проект</button>
+        </header>
+
+        <!-- Поиск без лишних фильтров -->
+        <div class="filters-bar" style="margin-bottom: 24px; background: transparent; border: none; padding: 0;">
+            <div class="search-input" style="width: 320px;">
+                <input type="text" id="project-search" placeholder="Поиск по названию или жанру…" style="width: 100%;">
+            </div>
+        </div>
+
+        <section class="projects-grid" id="projects-grid">
+            <!-- ПРОЕКТ 1 -->
+            <a href="board.html" class="project-card">
+                <button class="btn-delete-project" title="Удалить проект">✕</button>
+                <img src="https://placehold.co/600x200/904D30/FFFCF4?text=Последний+маяк" class="project-cover"
+                     alt="Последний маяк">
+                <div class="project-body">
+                    <div style="display: flex; justify-content: space-between; align-items: flex-start;">
+                        <h3 class="card-title project-name" style="margin: 0; font-size: 18px; color: #1A1A1A;">
+                            Последний маяк</h3>
+                    </div>
+                    <div class="tag-group">
+                        <span class="badge badge-accent project-genre">Полный метр</span>
+                        <span class="badge badge-accent project-genre">Драма</span>
+                    </div>
+                    <p class="card-desc" style="margin: 0; font-size: 13px; color: #827568; line-height: 1.5;">История о
+                        возвращении и свете, который мы оставляем после себя. Анна приезжает в пустой поселок,
+                        чтобы...</p>
+
+                    <div class="project-footer">
+                        <div style="display: flex; flex-direction: column; gap: 4px;">
+                            <span style="font-size: 11px; color: #827568; font-weight: 600;">9 СЦЕН</span>
+                            <span style="font-size: 11px; color: #A89B8C;">Изменено сегодня</span>
+                        </div>
+                        <div class="avatars-group">
+                            <div class="avatar bg-1" style="width: 24px; height: 24px; font-size: 10px;">АС</div>
+                            <div class="avatar bg-2" style="width: 24px; height: 24px; font-size: 10px;">МВ</div>
+                            <div class="avatar bg-3" style="width: 24px; height: 24px; font-size: 10px;">ДО</div>
+                        </div>
+                    </div>
+                </div>
+            </a>
+
+            <!-- ПРОЕКТ 2 -->
+            <a href="board.html" class="project-card">
+                <button class="btn-delete-project" title="Удалить проект">✕</button>
+                <img src="https://placehold.co/600x200/3F745C/FFFCF4?text=Тайны+старого+города" class="project-cover"
+                     alt="Детектив обложка">
+                <div class="project-body">
+                    <div style="display: flex; justify-content: space-between; align-items: flex-start;">
+                        <h3 class="card-title project-name" style="margin: 0; font-size: 18px; color: #1A1A1A;">Тайны
+                            старого города</h3>
+                    </div>
+                    <div class="tag-group">
+                        <span class="badge badge-accent project-genre">Мини-сериал</span>
+                        <span class="badge badge-accent project-genre">Детектив</span>
+                    </div>
+                    <p class="card-desc" style="margin: 0; font-size: 13px; color: #827568; line-height: 1.5;">
+                        Сыщик-любитель расследует серию загадочных краж, ведущих в высшее общество.</p>
+
+                    <div class="project-footer">
+                        <div style="display: flex; flex-direction: column; gap: 4px;">
+                            <span style="font-size: 11px; color: #827568; font-weight: 600;">24 СЦЕНЫ</span>
+                            <span style="font-size: 11px; color: #A89B8C;">Изменено 3 дня назад</span>
+                        </div>
+                        <div class="avatars-group">
+                            <div class="avatar bg-1" style="width: 24px; height: 24px; font-size: 10px;">АС</div>
+                        </div>
+                    </div>
+                </div>
+            </a>
+
+            <!-- ПРОЕКТ 3 (Пустой черновик) -->
+            <a href="board.html" class="project-card">
+                <button class="btn-delete-project" title="Удалить проект">✕</button>
+                <div class="project-cover"
+                     style="background: #E8DDC7; display: flex; align-items: center; justify-content: center; color: #827568; font-size: 24px; font-family: 'Lora', serif; border-bottom: 1px solid #D6C9B3;">
+                    Новая идея
+                </div>
+                <div class="project-body">
+                    <div style="display: flex; justify-content: space-between; align-items: flex-start;">
+                        <h3 class="card-title project-name" style="margin: 0; font-size: 18px; color: #1A1A1A;">
+                            Короткометражка (Без названия)</h3>
+                        <span class="badge badge-accent" style="background: #F5EFE6; color: #827568;">Черновик</span>
+                    </div>
+                    <div class="tag-group">
+                        <span class="badge badge-accent project-genre">Короткий метр</span>
+                    </div>
+                    <p class="card-desc" style="margin: 0; font-size: 13px; color: #827568; line-height: 1.5;">Пока
+                        только наброски сцен на кухне.</p>
+
+                    <div class="project-footer">
+                        <div style="display: flex; flex-direction: column; gap: 4px;">
+                            <span style="font-size: 11px; color: #827568; font-weight: 600;">0 СЦЕН</span>
+                            <span style="font-size: 11px; color: #A89B8C;">Изменено месяц назад</span>
+                        </div>
+                        <div class="avatars-group">
+                            <div class="avatar bg-1" style="width: 24px; height: 24px; font-size: 10px;">АС</div>
+                        </div>
+                    </div>
+                </div>
+            </a>
+
+            <!-- ПРОЕКТ 4 -->
+            <a href="board.html" class="project-card">
+                <button class="btn-delete-project" title="Удалить проект">✕</button>
+                <img src="https://placehold.co/600x200/D18B69/FFFCF4?text=Эхо+прошлого" class="project-cover" alt="Эхо прошлого">
+                <div class="project-body">
+                    <div style="display: flex; justify-content: space-between; align-items: flex-start;">
+                        <h3 class="card-title project-name" style="margin: 0; font-size: 18px; color: #1A1A1A;">Эхо прошлого</h3>
+                    </div>
+                    <div class="tag-group">
+                        <span class="badge badge-accent project-genre">Сериал</span>
+                        <span class="badge badge-accent project-genre">Триллер</span>
+                    </div>
+                    <p class="card-desc" style="margin: 0; font-size: 13px; color: #827568; line-height: 1.5;">Журналистка возвращается в родной город, чтобы написать статью, но случайно вскрывает тайну, которую местные жители хранили 20 лет.</p>
+
+                    <div class="project-footer">
+                        <div style="display: flex; flex-direction: column; gap: 4px;">
+                            <span style="font-size: 11px; color: #827568; font-weight: 600;">45 СЦЕН</span>
+                            <span style="font-size: 11px; color: #A89B8C;">Изменено 5 дней назад</span>
+                        </div>
+                        <div class="avatars-group">
+                            <div class="avatar bg-1" style="width: 24px; height: 24px; font-size: 10px;">АС</div>
+                            <div class="avatar bg-4" style="width: 24px; height: 24px; font-size: 10px; background: #E4EFE3; color: #3F745C;">ИЛ</div>
+                        </div>
+                    </div>
+                </div>
+            </a>
+
+            <!-- ПРОЕКТ 5 -->
+            <a href="board.html" class="project-card">
+                <button class="btn-delete-project" title="Удалить проект">✕</button>
+                <img src="https://placehold.co/600x200/5A7B8C/FFFCF4?text=Летние+каникулы" class="project-cover" alt="Летние каникулы">
+                <div class="project-body">
+                    <div style="display: flex; justify-content: space-between; align-items: flex-start;">
+                        <h3 class="card-title project-name" style="margin: 0; font-size: 18px; color: #1A1A1A;">Летние каникулы</h3>
+                    </div>
+                    <div class="tag-group">
+                        <span class="badge badge-accent project-genre">Полный метр</span>
+                        <span class="badge badge-accent project-genre">Комедия</span>
+                    </div>
+                    <p class="card-desc" style="margin: 0; font-size: 13px; color: #827568; line-height: 1.5;">Три друга арендуют фургон, чтобы поехать на музыкальный фестиваль, но из-за ошибки навигатора оказываются в глухой деревне без связи.</p>
+
+                    <div class="project-footer">
+                        <div style="display: flex; flex-direction: column; gap: 4px;">
+                            <span style="font-size: 11px; color: #827568; font-weight: 600;">12 СЦЕН</span>
+                            <span style="font-size: 11px; color: #A89B8C;">Изменено неделю назад</span>
+                        </div>
+                        <div class="avatars-group">
+                            <div class="avatar bg-1" style="width: 24px; height: 24px; font-size: 10px;">АС</div>
+                            <div class="avatar bg-2" style="width: 24px; height: 24px; font-size: 10px;">МВ</div>
+                        </div>
+                    </div>
+                </div>
+            </a>
+
+            <!-- ПРОЕКТ 6 -->
+            <a href="board.html" class="project-card">
+                <button class="btn-delete-project" title="Удалить проект">✕</button>
+                <img src="https://placehold.co/600x200/8C5A65/FFFCF4?text=Шепот+звёзд" class="project-cover" alt="Шепот звёзд">
+                <div class="project-body">
+                    <div style="display: flex; justify-content: space-between; align-items: flex-start;">
+                        <h3 class="card-title project-name" style="margin: 0; font-size: 18px; color: #1A1A1A;">Шёпот звёзд</h3>
+                    </div>
+                    <div class="tag-group">
+                        <span class="badge badge-accent project-genre">Мини-сериал</span>
+                        <span class="badge badge-accent project-genre">Фантастика</span>
+                    </div>
+                    <p class="card-desc" style="margin: 0; font-size: 13px; color: #827568; line-height: 1.5;">На борту космической станции, летящей к новой колонии, экипаж начинает получать радиосигналы, которые подозрительно похожи на их собственные голоса из будущего.</p>
+
+                    <div class="project-footer">
+                        <div style="display: flex; flex-direction: column; gap: 4px;">
+                            <span style="font-size: 11px; color: #827568; font-weight: 600;">8 СЦЕН</span>
+                            <span style="font-size: 11px; color: #A89B8C;">Изменено 2 недели назад</span>
+                        </div>
+                        <div class="avatars-group">
+                            <div class="avatar bg-1" style="width: 24px; height: 24px; font-size: 10px;">АС</div>
+                        </div>
+                    </div>
+                </div>
+            </a>
+
+            <!-- ПРОЕКТ 7 (Черновик) -->
+            <a href="board.html" class="project-card">
+                <button class="btn-delete-project" title="Удалить проект">✕</button>
+                <div class="project-cover" style="background: #E8DDC7; display: flex; align-items: center; justify-content: center; color: #827568; font-size: 24px; font-family: 'Lora', serif; border-bottom: 1px solid #D6C9B3;">Случай в доме</div>
+                <div class="project-body">
+                    <div style="display: flex; justify-content: space-between; align-items: flex-start;">
+                        <h3 class="card-title project-name" style="margin: 0; font-size: 18px; color: #1A1A1A;">Случай в доме</h3>
+                        <span class="badge badge-accent" style="background: #F5EFE6; color: #827568;">Черновик</span>
+                    </div>
+                    <div class="tag-group">
+                        <span class="badge badge-accent project-genre">Пьеса</span>
+                    </div>
+                    <p class="card-desc" style="margin: 0; font-size: 13px; color: #827568; line-height: 1.5;">Одна комната, три сестры и завещание, которое невозможно выполнить. Камерная история на один вечер.</p>
+
+                    <div class="project-footer">
+                        <div style="display: flex; flex-direction: column; gap: 4px;">
+                            <span style="font-size: 11px; color: #827568; font-weight: 600;">3 СЦЕНЫ</span>
+                            <span style="font-size: 11px; color: #A89B8C;">Изменено месяц назад</span>
+                        </div>
+                        <div class="avatars-group">
+                            <div class="avatar bg-1" style="width: 24px; height: 24px; font-size: 10px;">АС</div>
+                            <div class="avatar bg-3" style="width: 24px; height: 24px; font-size: 10px;">ДО</div>
+                        </div>
+                    </div>
+                </div>
+            </a>
+        </section>
+    </main>
+</div>
+
+<!-- Единое глобальное меню снизу -->
+<nav class="bottom-dock">
+    <a href="profile.html" class="dock-item">Профиль</a>
+    <a href="organizations.html" class="dock-item">Организации</a>
+    <a href="projects.html" class="dock-item active">Проекты</a>
+    <a href="board.html" class="dock-item">Доска </a>
+    <a href="characters.html" class="dock-item">База</a>
+    <a href="settings.html" class="dock-item">Настройки</a>
+</nav>
+
+<!-- Скрипты: Аккордеон, Переключение, Поиск, Удаление, Создание -->
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        // 1. Аккордеон
+        const actToggles = document.querySelectorAll('.act-toggle');
+        actToggles.forEach(toggle => {
+            toggle.addEventListener('click', () => {
+                toggle.classList.toggle('expanded');
+                const content = toggle.nextElementSibling;
+                if (content.classList.contains('expanded')) {
+                    content.classList.remove('expanded');
+                } else {
+                    content.classList.add('expanded');
+                }
+            });
+        });
+
+        // 2. Скрытие бокового меню
+        const toggleBtn = document.querySelector('.toggle-sidebar-btn');
+        const sidebar = document.getElementById('app-sidebar');
+        if (toggleBtn && sidebar) {
+            toggleBtn.addEventListener('click', () => sidebar.classList.toggle('collapsed'));
+        }
+
+        // 3. Анимация переключения проектов
+        const projectSwitcher = document.getElementById('project-switcher');
+        const contentWrapper = document.getElementById('base-content-wrapper');
+        if (projectSwitcher && contentWrapper) {
+            projectSwitcher.addEventListener('change', () => {
+                contentWrapper.style.opacity = '0.3';
+                setTimeout(() => {
+                    contentWrapper.style.opacity = '1';
+                }, 300);
+            });
+        }
+
+        // 4. Поиск проектов
+        const searchInput = document.getElementById('project-search');
+        const grid = document.getElementById('projects-grid');
+        if (searchInput && grid) {
+            searchInput.addEventListener('input', (e) => {
+                const query = e.target.value.toLowerCase().trim();
+                const cards = grid.querySelectorAll('.project-card');
+
+                cards.forEach(card => {
+                    const name = card.querySelector('.project-name').innerText.toLowerCase();
+                    // Склеиваем все жанры в одну строку
+                    const genres = Array.from(card.querySelectorAll('.project-genre')).map(g => g.innerText.toLowerCase()).join(' ');
+
+                    if (name.includes(query) || genres.includes(query)) {
+                        card.style.display = '';
+                    } else {
+                        card.style.display = 'none';
+                    }
+                });
+            });
+        }
+
+        // 5. Удаление проекта
+        grid.addEventListener('click', (e) => {
+            const deleteBtn = e.target.closest('.btn-delete-project');
+            if (deleteBtn) {
+                e.preventDefault();
+                e.stopPropagation(); // Не переходим на страницу доски
+
+                const card = deleteBtn.closest('.project-card');
+                const projectName = card.querySelector('.project-name').innerText;
+
+                const overlay = document.createElement('div');
+                overlay.style.position = 'fixed'; overlay.style.top = '0'; overlay.style.left = '0';
+                overlay.style.width = '100%'; overlay.style.height = '100%';
+                overlay.style.backgroundColor = 'rgba(48, 39, 28, 0.5)';
+                overlay.style.zIndex = '1000'; overlay.style.display = 'flex';
+                overlay.style.alignItems = 'center'; overlay.style.justifyContent = 'center';
+                overlay.style.backdropFilter = 'blur(2px)';
+
+                const modal = document.createElement('div');
+                modal.className = 'card';
+                modal.style.cssText = `width: 380px; padding: 32px; display: flex; flex-direction: column; gap: 16px; background: #FFFCF4; border: 1px solid #E8DDC7; text-align: center; box-shadow: 0 12px 48px rgba(74, 55, 40, 0.15);`;
+
+                modal.innerHTML = `
+                    <h3 style="margin: 0; font-size: 20px; color: #1A1A1A;">Удалить проект?</h3>
+                    <p style="margin: 0; font-size: 14px; color: #4A3728; line-height: 1.5;">
+                        Вы уверены, что хотите удалить <b>«${projectName}»</b>?<br>Будут удалены все сцены, персонажи и комментарии. Это нельзя отменить.
+                    </p>
+                    <div style="display: flex; gap: 12px; justify-content: center; margin-top: 16px;">
+                        <button class="btn btn-secondary btn-sm modal-cancel">Отмена</button>
+                        <button class="btn btn-primary btn-sm modal-confirm" style="background: #C64343; border-color: #C64343;">Удалить навсегда</button>
+                    </div>
+                `;
+
+                modal.querySelector('.modal-cancel').addEventListener('click', () => overlay.remove());
+
+                modal.querySelector('.modal-confirm').addEventListener('click', () => {
+                    card.remove();
+                    overlay.remove();
+                });
+
+                overlay.appendChild(modal);
+                document.body.appendChild(overlay);
+            }
+        });
+
+        // 6. Создание проекта
+        const createBtn = document.getElementById('create-project-btn');
+        const urlParams = new URLSearchParams(window.location.search);
+
+        if (urlParams.get('action') === 'new-project') {
+            openCreateProjectModal();
+            window.history.replaceState({}, document.title, window.location.pathname);
+        }
+
+        if (createBtn) {
+            createBtn.addEventListener('click', (e) => {
+                e.preventDefault();
+                openCreateProjectModal();
+            });
+        }
+
+        function openCreateProjectModal() {
+            const overlay = document.createElement('div');
+            overlay.style.position = 'fixed'; overlay.style.top = '0'; overlay.style.left = '0';
+            overlay.style.width = '100%'; overlay.style.height = '100%';
+            overlay.style.backgroundColor = 'rgba(48, 39, 28, 0.5)';
+            overlay.style.zIndex = '1000'; overlay.style.display = 'flex';
+            overlay.style.alignItems = 'center'; overlay.style.justifyContent = 'center';
+            overlay.style.backdropFilter = 'blur(2px)';
+
+            const modal = document.createElement('div');
+            modal.className = 'card';
+            modal.style.width = '480px'; modal.style.padding = '32px';
+            modal.style.display = 'flex'; modal.style.flexDirection = 'column'; modal.style.gap = '20px';
+            modal.style.background = '#FFFCF4';
+
+            modal.innerHTML = `
+                <h3 style="margin: 0; font-size: 20px; color: #1A1A1A;">Новый проект</h3>
+
+                <div class="form-group" style="margin: 0;">
+                    <label class="form-label" style="color: #827568;">Название</label>
+                    <input type="text" id="modal-proj-name" class="form-input" placeholder="Например: Невероятное путешествие" autofocus>
+                </div>
+
+                <div style="display: flex; gap: 12px;">
+                    <div class="form-group" style="flex: 1; margin: 0;">
+                        <label class="form-label" style="color: #827568;">Формат</label>
+                        <select class="form-select" id="modal-proj-format">
+                            <option value="Полный метр">Полный метр</option>
+                            <option value="Сериал">Сериал</option>
+                            <option value="Мини-сериал">Мини-сериал</option>
+                            <option value="Короткий метр">Короткий метр</option>
+                            <option value="Пьеса">Пьеса</option>
+                        </select>
+                    </div>
+                    <div class="form-group" style="flex: 1; margin: 0;">
+                        <label class="form-label" style="color: #827568;">Жанр</label>
+                        <input type="text" id="modal-proj-genre" class="form-input" placeholder="Драма, Комедия...">
+                    </div>
+                </div>
+
+                <div class="form-group" style="margin: 0;">
+                    <label class="form-label" style="color: #827568;">Обложка проекта</label>
+                    <div style="display: flex; gap: 12px; align-items: center; border: 1px dashed #E8DDC7; padding: 12px; border-radius: 6px; background: #F5EFE6;">
+                        <label class="btn btn-secondary btn-sm" style="cursor: pointer; margin: 0;">
+                            Загрузить файл
+                            <input type="file" id="modal-img-upload" accept="image/*" style="display: none;">
+                        </label>
+                        <span id="modal-img-name" style="font-size: 13px; color: #827568;">По умолчанию будет цветной фон</span>
+                    </div>
+                </div>
+
+                <div class="form-group" style="margin: 0;">
+                    <label class="form-label" style="color: #827568;">Логлайн (краткое описание)</label>
+                    <textarea id="modal-proj-desc" class="form-input" placeholder="О чем эта история?" style="height: 60px; resize: none; padding: 10px 12px; font-family: inherit;"></textarea>
+                </div>
+
+                <div style="display: flex; gap: 12px; justify-content: flex-end; margin-top: 8px;">
+                    <button class="btn btn-secondary btn-sm modal-close">Отмена</button>
+                    <button class="btn btn-primary btn-sm modal-save">Создать</button>
+                </div>
+            `;
+
+            let uploadedImgData = null;
+            modal.querySelector('#modal-img-upload').addEventListener('change', (e) => {
+                const file = e.target.files[0];
+                if (file) {
+                    modal.querySelector('#modal-img-name').innerText = file.name;
+                    const reader = new FileReader();
+                    reader.onload = (e) => { uploadedImgData = e.target.result; };
+                    reader.readAsDataURL(file);
+                }
+            });
+
+            modal.querySelector('.modal-close').addEventListener('click', () => overlay.remove());
+
+            modal.querySelector('.modal-save').addEventListener('click', () => {
+                const name = modal.querySelector('#modal-proj-name').value || 'Без названия';
+                const format = modal.querySelector('#modal-proj-format').value;
+                const genre = modal.querySelector('#modal-proj-genre').value || 'Жанр не указан';
+                const desc = modal.querySelector('#modal-proj-desc').value || 'Описание пока отсутствует.';
+
+                const finalImg = uploadedImgData
+                    ? `<img src="${uploadedImgData}" class="project-cover" alt="Обложка">`
+                    : `<div class="project-cover" style="background: #E8DDC7; display: flex; align-items: center; justify-content: center; color: #827568; font-size: 24px; font-family: 'Lora', serif; border-bottom: 1px solid #D6C9B3;">${name.charAt(0).toUpperCase()}</div>`;
+
+                const newCard = document.createElement('a');
+                newCard.href = "board.html";
+                newCard.className = "project-card";
+                newCard.innerHTML = `
+                    <button class="btn-delete-project" title="Удалить проект">✕</button>
+                    ${finalImg}
+                    <div class="project-body">
+                        <div style="display: flex; justify-content: space-between; align-items: flex-start;">
+                            <h3 class="card-title project-name" style="margin: 0; font-size: 18px; color: #1A1A1A;">${name}</h3>
+                        </div>
+                        <div class="tag-group">
+                            <span class="badge badge-accent project-genre">${format}</span>
+                            <span class="badge badge-accent project-genre">${genre}</span>
+                        </div>
+                        <p class="card-desc" style="margin: 0; font-size: 13px; color: #827568; line-height: 1.5;">${desc}</p>
+                        <div class="project-footer">
+                            <div style="display: flex; flex-direction: column; gap: 4px;">
+                                <span style="font-size: 11px; color: #827568; font-weight: 600;">0 СЦЕН</span>
+                                <span style="font-size: 11px; color: #A89B8C;">Создан только что</span>
+                            </div>
+                            <div class="avatars-group">
+                                <div class="avatar bg-1" style="width: 24px; height: 24px; font-size: 10px;">АС</div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+
+                grid.insertBefore(newCard, grid.firstChild);
+                overlay.remove();
+            });
+
+            overlay.appendChild(modal);
+            document.body.appendChild(overlay);
+        }
+    });
+</script>
+</body>
+</html>

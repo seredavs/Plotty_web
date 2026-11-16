@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Plotty - Редактор сцены</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Lora:ital,wght@0,400;0,600;1,400&family=Montserrat:wght@400&display=swap"
+          rel="stylesheet">
+    <link rel="stylesheet" href="../css/main.css">
+    <link rel="stylesheet" href="../css/components.css">
+    <style>
+        .sidebar { transition: width 0.3s ease, min-width 0.3s ease, padding 0.3s ease; overflow: hidden; padding-top: 64px !important; }
+        .sidebar.collapsed { width: 0 !important; min-width: 0 !important; padding-left: 0; padding-right: 0; border-right: none; }
+        .toggle-sidebar-btn { position: fixed; left: 24px; top: 24px; z-index: 1000; background: #FFFCF4; border: 1px solid #E8DDC7; border-radius: 6px; padding: 6px 12px; cursor: pointer; color: #4A3728; font-size: 16px; transition: background 0.2s; }
+        .toggle-sidebar-btn:hover { background: #F0DFCE; }
+        .main-content { padding-left: 24px; box-sizing: border-box; }
+
+        .back-to-global { display: flex; align-items: center; gap: 8px; color: #827568; font-size: 12px; font-weight: 500; padding: 16px; text-decoration: none; border-bottom: 1px solid #E8DDC7; transition: color 0.2s, background 0.2s; }
+        .back-to-global:hover { color: #1A1A1A; background: #F5EFE6; }
+
+        .act-toggle { cursor: pointer; display: flex; justify-content: space-between; align-items: center; user-select: none; }
+        .act-toggle:hover { background: #F5EFE6; }
+        .act-content { display: none; }
+        .act-content.expanded { display: block; }
+        .chevron { transition: transform 0.2s; font-size: 10px; color: #827568; }
+        .act-toggle.expanded .chevron { transform: rotate(90deg); }
+
+        .btn-add-char { cursor: pointer; color: #827568; background: transparent; border: none; font-weight: 500; transition: color 0.2s; padding: 4px 0; text-align: left; width: 100%; font-size: 13px; }
+        .btn-add-char:hover { color: #904D30; }
+    </style>
+</head>
+<body>
+
+<button class="toggle-sidebar-btn" title="Скрыть/показать меню">☰</button>
+
+<div class="app-layout">
+    <!-- ЛОКАЛЬНОЕ ЛЕВОЕ МЕНЮ (Как в board) -->
+    <aside class="sidebar" id="app-sidebar">
+        <a href="projects.html" class="back-to-global">
+            <span>←</span> К списку проектов
+        </a>
+
+        <div class="sidebar-section-title" style="margin-top: 16px; color: #1A1A1A;">ПОСЛЕДНИЙ МАЯК</div>
+        <nav class="sidebar-nav">
+            <a href="board.html" class="sidebar-item">Доска сюжета</a>
+        </nav>
+
+        <div class="sidebar-divider"></div>
+        <div class="sidebar-section-title">СЦЕНЫ</div>
+        <nav class="sidebar-nav">
+            <div>
+                <div class="sidebar-item act-toggle expanded"><span>I. Возвращение</span> <span class="chevron">▶</span>
+                </div>
+                <div class="sidebar-sub-nav act-content expanded">
+                    <a href="scene-01.html" class="sidebar-sub-item">· 01 · Письмо отца</a>
+                    <a href="scene-02.html" class="sidebar-sub-item">· 02 · На причале</a>
+                    <a href="scene.html" class="sidebar-sub-item active">· 03 · Свет в тумане</a>
+                </div>
+            </div>
+            <div>
+                <div class="sidebar-item act-toggle"><span>II. Тишина</span> <span class="chevron">▶</span></div>
+                <div class="sidebar-sub-nav act-content">
+                    <a href="scene.html" class="sidebar-sub-item">· 04 · Закрытая дверь</a>
+                    <a href="scene-01.html" class="sidebar-sub-item">· 05 · Старые записи</a>
+                    <a href="scene-02.html" class="sidebar-sub-item">· 06 · Шторм</a>
+                </div>
+            </div>
+            <div>
+                <div class="sidebar-item act-toggle"><span>III. Новый свет</span> <span class="chevron">▶</span></div>
+                <div class="sidebar-sub-nav act-content">
+                    <a href="scene-02.html" class="sidebar-sub-item">· 07 · Выбор Анны</a>
+                    <a href="scene.html" class="sidebar-sub-item">· 08 · Последняя ночь</a>
+                    <a href="scene-01.html" class="sidebar-sub-item">· 09 · Первый луч</a>
+                </div>
+            </div>
+        </nav>
+
+        <div class="sidebar-divider"></div>
+        <div class="sidebar-section-title">БАЗА И КОМАНДА</div>
+        <nav class="sidebar-nav">
+            <a href="characters.html" class="sidebar-item">Персонажи</a>
+            <a href="locations.html" class="sidebar-item">Локации</a>
+            <a href="../participants.html" class="sidebar-item">Участники</a>
+            <a href="history.html" class="sidebar-item">История ревизий</a>
+        </nav>
+    </aside>
+
+    <main class="main-content" style="padding-top: 24px; padding-bottom: 100px; padding-right: 32px;">
+        <header class="page-header" style="margin-bottom: 24px;">
+            <div class="header-text">
+                <h1 class="page-title">03 · Свет в тумане</h1>
+                <p class="page-desc">Акт I. Возвращение / Сцена 3 из 9</p>
+            </div>
+            <div style="display: flex; gap: 12px; align-items: center;">
+                <button class="btn btn-secondary btn-sm" onclick="window.location.href='full-script.html'">Сценарий
+                    целиком
+                </button>
+                <div class="btn-group">
+                    <button class="btn btn-secondary btn-sm" onclick="window.location.href='scene-02.html'">Предыдущая
+                    </button>
+                    <button class="btn btn-secondary btn-sm" disabled>Следующая</button>
+                </div>
+            </div>
+        </header>
+
+        <div class="editor-layout">
+            <div class="sidebar-meta">
+                <div class="card meta-card">
+                    <h3 class="meta-title">О сцене</h3>
+
+                    <div class="form-group">
+                        <label class="form-label">Статус</label>
+                        <select class="form-select">
+                            <option>В работе</option>
+                            <option>Готово</option>
+                            <option>Черновик</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Локация</label>
+                        <select class="form-select">
+                            <option>Маяк</option>
+                            <option>Старый причал</option>
+                        </select>
+                    </div>
+
+                    <div class="meta-divider"></div>
+
+                    <h4 class="meta-subtitle">ПЕРСОНАЖИ</h4>
+                    <div class="character-list">
+                        <div class="char-item"
+                             style="display: flex; align-items: stretch; background: #FFFCF4; border: 1px solid #E8DDC7; border-radius: 6px; overflow: hidden; margin-bottom: 8px;">
+                            <div style="width: 8px; background-color: #3F745C; flex-shrink: 0;"></div>
+                            <div class="char-info" style="padding: 8px 12px; display: flex; flex-direction: column;">
+                                <span class="char-name" style="font-size: 13px; font-weight: 600; color: #1A1A1A;">Анна Морозова</span>
+                                <span class="char-role" style="font-size: 11px; color: #827568;">Главная героиня</span>
+                            </div>
+                        </div>
+                        <div class="char-item"
+                             style="display: flex; align-items: stretch; background: #FFFCF4; border: 1px solid #E8DDC7; border-radius: 6px; overflow: hidden; margin-bottom: 8px;">
+                            <div style="width: 8px; background-color: #904D30; flex-shrink: 0;"></div>
+                            <div class="char-info" style="padding: 8px 12px; display: flex; flex-direction: column;">
+                                <span class="char-name" style="font-size: 13px; font-weight: 600; color: #1A1A1A;">Сергей Котов</span>
+                                <span class="char-role" style="font-size: 11px; color: #827568;">Смотритель маяка</span>
+                            </div>
+                        </div>
+                        <button class="btn-add-char">＋ Добавить персонажа</button>
+                    </div>
+                </div>
+
+                <div class="card meta-card">
+                    <h3 class="meta-title">Ревизии</h3>
+                    <a href="history.html" class="btn btn-secondary btn-block btn-sm"
+                       style="text-decoration: none; text-align: center;">Последняя: № 5 · Сегодня, 14:32</a>
+                </div>
+            </div>
+
+            <div class="editor-main">
+                <div class="card editor-card" style="padding: 0; overflow: hidden; margin-bottom: 24px;">
+                    <div class="editor-toolbar" id="read-toolbar"
+                         style="display: flex; justify-content: space-between; align-items: center; padding: 12px 24px; border-bottom: 1px solid #E8DDC7; background: #FFFCF4;">
+                        <span class="toolbar-zoom" style="color: #827568; font-size: 12px;">100%</span>
+                        <div style="display: flex; gap: 8px;">
+                            <button class="btn btn-secondary btn-sm" id="btn-export-pdf"
+                                    style="height: 32px; padding: 0 16px;">Экспорт
+                            </button>
+                            <button class="btn btn-secondary btn-sm" id="btn-edit-scene"
+                                    style="height: 32px; padding: 0 16px;">Редактировать
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="editor-toolbar" id="edit-toolbar"
+                         style="display: none; justify-content: space-between; align-items: center; padding: 12px 24px; border-bottom: 1px solid #E8DDC7; background: #F5EFE6;">
+                        <div style="display: flex; gap: 8px;">
+                            <button class="btn btn-secondary btn-sm" id="btn-bold"
+                                    style="height: 32px; width: 32px; padding: 0; font-weight: bold; background: #FFF;">
+                                Ж
+                            </button>
+                            <button class="btn btn-secondary btn-sm" id="btn-italic"
+                                    style="height: 32px; width: 32px; padding: 0; font-style: italic; background: #FFF;">
+                                К
+                            </button>
+                            <select class="form-select"
+                                    style="height: 32px; padding: 0 8px; font-size: 12px; border-color: #E8DDC7;">
+                                <option>Действие</option>
+                                <option>Имя персонажа</option>
+                                <option>Реплика</option>
+                                <option>Ремарка</option>
+                            </select>
+                        </div>
+                        <button class="btn btn-primary btn-sm" id="btn-save-scene"
+                                style="height: 32px; padding: 0 16px; transition: all 0.3s;">Сохранить
+                        </button>
+                    </div>
+
+                    <div style="padding: 32px 40px;">
+                        <div class="editor-content" id="formatted-content" style="min-height: 300px;">
+                            <div class="scene-heading">НАТ. МАЯК — ВЕЧЕР</div>
+                            <div class="action-text">Туман стирает линию горизонта. АННА стоит у подножия маяка. В руке
+                                — письмо отца, сложенное вчетверо.
+                            </div>
+                            <div class="action-text">Наверху скрипит железная рама. Анна поднимает голову. За стеклом
+                                фонаря появляется тёплая полоса.
+                            </div>
+
+                            <div class="dialogue-block">
+                                <div class="character-name">АННА</div>
+                                <div class="dialogue-text">Ты ведь обещал, что свет не погаснет.</div>
+                            </div>
+
+                            <div class="action-text">Дверь приоткрывается. СЕРГЕЙ стоит на пороге, заслоняя собой
+                                лестницу. На его ладони — старый латунный ключ.
+                            </div>
+
+                            <div class="dialogue-block">
+                                <div class="character-name">СЕРГЕЙ</div>
+                                <div class="dialogue-text">Некоторые обещания переживают людей.</div>
+                            </div>
+                        </div>
+
+                        <div id="raw-content" contenteditable="true"
+                             style="display: none; width: 100%; min-height: 300px; border: none; outline: none; font-family: 'Lora', serif; font-size: 15px; line-height: 1.6; color: #1A1A1A; background: transparent; white-space: pre-wrap;">
+                            НАТ. МАЯК — ВЕЧЕР
+
+                            Туман стирает линию горизонта. АННА стоит у подножия маяка. В руке — письмо отца, сложенное
+                            вчетверо.
+                            Наверху скрипит железная рама. Анна поднимает голову. За стеклом фонаря появляется тёплая
+                            полоса.
+
+                            АННА
+                            Ты ведь обещал, что свет не погаснет.
+
+                            Дверь приоткрывается. СЕРГЕЙ стоит на пороге, заслоняя собой лестницу. На его ладони —
+                            старый латунный ключ.
+
+                            СЕРГЕЙ
+                            Некоторые обещания переживают людей.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card comments-card">
+                    <div class="comments-header"
+                         style="display: flex; align-items: center; justify-content: space-between;">
+                        <h3 class="meta-title" style="margin: 0;">Комментарии (2)</h3>
+                        <span class="meta-subtitle">История 5</span>
+                    </div>
+                    <div class="meta-divider"></div>
+
+                    <div class="comment-item">
+                        <div class="avatar bg-2">МВ</div>
+                        <div class="comment-content">
+                            <div class="comment-author">Мария Волкова · 14:18</div>
+                            <div class="comment-text">А если свет появится чуть позже? Дадим Анне секунду побыть в
+                                темноте.
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="comment-item">
+                        <div class="avatar bg-3">ДО</div>
+                        <div class="comment-content">
+                            <div class="comment-author">Денис Орлов · 14:25</div>
+                            <div class="comment-text">Поддерживаю. Пауза перед репликой сделает появление Сергея
+                                сильнее.
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="comment-input-area"
+                         style="display: flex; gap: 12px; align-items: flex-end; margin-top: 16px;">
+                        <div class="form-group" style="flex: 1; margin: 0;">
+                            <label class="form-label">Ваш комментарий</label>
+                            <input type="text" class="form-input" placeholder="Напишите, что думаете о сцене…">
+                        </div>
+                        <button class="btn btn-primary btn-sm" style="height: 40px;">Отправить</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+</div>
+
+<!-- Глобальное прибитое меню снизу -->
+<nav class="bottom-dock">
+    <a href="profile.html" class="dock-item">Профиль</a>
+    <a href="organizations.html" class="dock-item">Организации</a>
+    <a href="projects.html" class="dock-item">Проекты</a>
+    <a href="board.html" class="dock-item active">Доска</a>
+    <a href="characters.html" class="dock-item">База</a>
+    <a href="settings.html" class="dock-item">Настройки</a>
+</nav>
+
+<div id="toast" class="toast"
+     style="position: fixed; bottom: 40px; right: 24px; background: #3F745C; color: #FFFCF4; padding: 12px 24px; border-radius: 6px; box-shadow: 0 4px 12px rgba(63, 116, 92, 0.2); font-size: 14px; font-weight: 500; transform: translateY(100px); opacity: 0; transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275), opacity 0.3s; z-index: 2000;">
+    Скачивание PDF началось...
+</div>
+
+<script src="../js/ui.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const actToggles = document.querySelectorAll('.act-toggle');
+        actToggles.forEach(toggle => {
+            toggle.addEventListener('click', () => {
+                toggle.classList.toggle('expanded');
+                const content = toggle.nextElementSibling;
+                if (content.classList.contains('expanded')) {
+                    content.classList.remove('expanded');
+                } else {
+                    content.classList.add('expanded');
+                }
+            });
+        });
+
+        const exportBtn = document.getElementById('btn-export-pdf');
+        if (exportBtn) {
+            exportBtn.addEventListener('click', () => {
+                const toast = document.getElementById('toast');
+                toast.style.transform = 'translateY(0)';
+                toast.style.opacity = '1';
+                setTimeout(() => {
+                    toast.style.transform = 'translateY(100px)';
+                    toast.style.opacity = '0';
+                }, 3000);
+            });
+        }
+
+        document.querySelectorAll('.btn-add-char').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                e.preventDefault();
+                e.stopImmediatePropagation();
+
+                const overlay = document.createElement('div');
+                overlay.style.position = 'fixed'; overlay.style.top = '0'; overlay.style.left = '0';
+                overlay.style.width = '100%'; overlay.style.height = '100%';
+                overlay.style.backgroundColor = 'rgba(48, 39, 28, 0.5)';
+                overlay.style.zIndex = '1000'; overlay.style.display = 'flex';
+                overlay.style.alignItems = 'center'; overlay.style.justifyContent = 'center';
+                overlay.style.backdropFilter = 'blur(2px)';
+
+                const isDark = document.body.classList.contains('dark-theme');
+                const bg = isDark ? '#24211E' : '#FFFFFF';
+                const text = isDark ? '#F4E9D8' : '#1A1A1A';
+                const inputBg = isDark ? '#1A1816' : '#FFFFFF';
+                const border = isDark ? '#302B26' : '#E8DDC7';
+
+                const modal = document.createElement('div');
+                modal.className = 'card';
+                modal.style.cssText = `width: 320px; padding: 24px; display: flex; flex-direction: column; gap: 16px; background: ${bg}; border: 1px solid ${border};`;
+
+                modal.innerHTML = `
+                    <h3 style="margin: 0; color: ${text}; font-size: 18px;">Новый персонаж</h3>
+                    <input type="text" id="new-char-name" class="form-input" placeholder="Имя персонажа" style="background:${inputBg}; color:${text}; border-color:${border};" autofocus>
+                    <input type="text" id="new-char-role" class="form-input" placeholder="Роль (например, Рыбак)" style="background:${inputBg}; color:${text}; border-color:${border};">
+                    <div style="display: flex; gap: 12px; justify-content: flex-end; margin-top: 8px;">
+                        <button class="btn btn-secondary btn-sm modal-close" style="background:transparent; color:${text}; border-color:${border};">Отмена</button>
+                        <button class="btn btn-primary btn-sm modal-save">Добавить</button>
+                    </div>
+                `;
+
+                modal.querySelector('.modal-save').addEventListener('click', () => {
+                    const name = modal.querySelector('#new-char-name').value || 'Неизвестный';
+                    const role = modal.querySelector('#new-char-role').value || 'Без роли';
+
+                    const charList = btn.closest('.character-list');
+                    const newChar = document.createElement('div');
+                    newChar.className = 'char-item';
+                    newChar.style.cssText = 'display: flex; align-items: stretch; background: #FFFCF4; border: 1px solid #E8DDC7; border-radius: 6px; overflow: hidden; margin-bottom: 8px;';
+
+                    const colors = ['#904D30', '#3F745C', '#D18B69', '#827568'];
+                    const randomColor = colors[Math.floor(Math.random() * colors.length)];
+
+                    newChar.innerHTML = `
+                        <div style="width: 8px; background-color: ${randomColor}; flex-shrink: 0;"></div>
+                        <div class="char-info" style="padding: 8px 12px; display: flex; flex-direction: column;">
+                            <span class="char-name" style="font-size: 13px; font-weight: 600; color: #1A1A1A;">${name}</span>
+                            <span class="char-role" style="font-size: 11px; color: #827568;">${role}</span>
+                        </div>
+                    `;
+                    charList.insertBefore(newChar, btn);
+                    overlay.remove();
+                });
+
+                modal.querySelector('.modal-close').addEventListener('click', () => overlay.remove());
+                overlay.appendChild(modal);
+                document.body.appendChild(overlay);
+            });
+        });
+    });
+</script>
+</body>
+</html>

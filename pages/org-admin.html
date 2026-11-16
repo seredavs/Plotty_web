@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Plotty - Управление организацией</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Lora:ital,wght@0,400;0,600;1,400&family=Montserrat:wght@400&display=swap"
+          rel="stylesheet">
+    <link rel="stylesheet" href="../css/main.css">
+    <link rel="stylesheet" href="../css/components.css">
+    <style>
+        .settings-layout { transition: opacity 0.2s ease; }
+
+        .back-to-global { display: flex; align-items: center; gap: 8px; color: #827568; font-size: 12px; font-weight: 500; padding: 16px 24px; text-decoration: none; border-bottom: 1px solid #E8DDC7; transition: color 0.2s, background 0.2s; margin-bottom: 16px; }
+        .back-to-global:hover { color: #1A1A1A; background: #F5EFE6; }
+    </style>
+</head>
+<body>
+<!-- Кнопка скрытия/показа меню -->
+<button class="toggle-sidebar-btn" title="Скрыть/показать меню">☰</button>
+
+<div class="app-layout">
+    <!-- Очищенное Контекстное Левое меню -->
+    <aside class="sidebar" id="app-sidebar">
+
+        <a href="organizations.html" class="back-to-global">
+            <span>←</span> К списку организаций
+        </a>
+
+        <div class="sidebar-section-title">ВЫБРАТЬ ОРГАНИЗАЦИЮ</div>
+        <nav class="sidebar-nav" style="padding-bottom: 12px;">
+            <select id="org-switcher" class="form-select"
+                    style="width: 100%; background: transparent; border-color: #E8DDC7; color: #1A1A1A;">
+                <option selected>Тихий кадр</option>
+                <option>Сценарная мастерская</option>
+                <option>Личное пространство</option>
+            </select>
+        </nav>
+
+        <div class="sidebar-divider"></div>
+
+        <div class="sidebar-section-title">НАСТРОЙКИ ОРГАНИЗАЦИИ</div>
+        <nav class="sidebar-nav">
+            <a href="org-admin.html" class="sidebar-item active">Команда и роли</a>
+            <!-- Экспорт ведет на нужный вам файл -->
+            <a href="full-script.html" class="sidebar-item">Экспорт данных</a>
+        </nav>
+    </aside>
+
+    <main class="main-content" style="padding-top: 24px;">
+        <header class="page-header">
+            <div class="header-text">
+                <h1 class="page-title">Команда организации</h1>
+                <p class="page-desc">Управляйте участниками и их доступом ко всем проектов.</p>
+            </div>
+            <div class="btn-group">
+                <button class="btn btn-primary btn-sm action-btn" id="btn-invite-user">Пригласить участника</button>
+            </div>
+        </header>
+
+        <div class="card"
+             style="padding: 16px 24px; margin-bottom: 24px; background: #F5EFE6; border: 1px solid #E8DDC7;">
+            <h4 style="margin: 0 0 12px 0; font-size: 14px; color: #904D30; font-family: 'Montserrat', sans-serif;">
+                Права и роли участников</h4>
+            <ul style="margin: 0; padding-left: 20px; font-size: 13px; color: #4A3728; display: flex; flex-direction: column; gap: 8px;">
+                <li><strong>Директор:</strong> Владелец организации. Имеет полный объём прав во всех её проектах. Может
+                    назначать руководителей и экспортировать данные.
+                </li>
+                <li><strong>Руководитель проекта:</strong> Полные права, но только в рамках назначенного проекта. Может
+                    приглашать редакторов.
+                </li>
+                <li><strong>Редактор:</strong> Редактирует текст проекта, фиксирует ревизии, приглашает комментаторов.
+                </li>
+                <li><strong>Комментатор:</strong> Просматривает проект, оставляет комментарии к сценам и отвечает на
+                    них.
+                </li>
+            </ul>
+        </div>
+
+        <div class="settings-layout" id="org-settings-content">
+            <div class="settings-col-main">
+                <div class="card">
+                    <div style="padding: 20px 24px; border-bottom: 1px solid #E8DDC7;">
+                        <h3 class="meta-title" id="team-counter">Команда организации (5)</h3>
+                    </div>
+                    <div class="participants-table" style="border: none; border-radius: 0;">
+                        <div class="table-header">
+                            <div class="col-user">УЧАСТНИК</div>
+                            <div class="col-role">РОЛЬ ПО УМОЛЧАНИЮ</div>
+                        </div>
+
+                        <div class="table-row">
+                            <div class="col-user">
+                                <div class="avatar bg-1" style="width:32px; height:32px;">АС</div>
+                                <div style="display:flex; flex-direction:column; gap:2px;">
+                                    <span style="font-weight:600; font-size:13px; color:#1A1A1A;">Анна Соколова</span>
+                                    <span style="font-size:11px; color:#827568;">anna@tihiykadr.ru</span>
+                                </div>
+                            </div>
+                            <div class="col-role" style="color:#904D30; font-weight:600;">Директор (Вы)</div>
+                        </div>
+
+                        <div class="table-row">
+                            <div class="col-user">
+                                <div class="avatar bg-2" style="width:32px; height:32px;">ДО</div>
+                                <div style="display:flex; flex-direction:column; gap:2px;">
+                                    <span style="font-weight:600; font-size:13px; color:#1A1A1A;">Денис Орлов</span>
+                                    <span style="font-size:11px; color:#827568;">denis@tihiykadr.ru</span>
+                                </div>
+                            </div>
+                            <div class="col-role">
+                                <select class="form-select" style="height:32px; padding:0 8px; font-size:12px;">
+                                    <option>Руководитель</option>
+                                    <option selected>Редактор</option>
+                                    <option>Комментатор</option>
+                                    <option>Читатель</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="table-row">
+                            <div class="col-user">
+                                <div class="avatar bg-4"
+                                     style="width:32px; height:32px; background:#E4EFE3; color:#3F745C;">ИЛ
+                                </div>
+                                <div style="display:flex; flex-direction:column; gap:2px;">
+                                    <span style="font-weight:600; font-size:13px; color:#1A1A1A;">Илья Лебедев</span>
+                                    <span style="font-size:11px; color:#827568;">ilya@tihiykadr.ru</span>
+                                </div>
+                            </div>
+                            <div class="col-role">
+                                <select class="form-select" style="height:32px; padding:0 8px; font-size:12px;">
+                                    <option>Руководитель</option>
+                                    <option selected>Редактор</option>
+                                    <option>Комментатор</option>
+                                    <option>Читатель</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="table-row">
+                            <div class="col-user">
+                                <div class="avatar bg-3" style="width:32px; height:32px;">МВ</div>
+                                <div style="display:flex; flex-direction:column; gap:2px;">
+                                    <span style="font-weight:600; font-size:13px; color:#1A1A1A;">Мария Волкова</span>
+                                </div>
+                            </div>
+                            <div class="col-role">
+                                <select class="form-select" style="height:32px; padding:0 8px; font-size:12px;">
+                                    <option>Руководитель</option>
+                                    <option>Редактор</option>
+                                    <option selected>Комментатор</option>
+                                    <option>Читатель</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="table-row">
+                            <div class="col-user">
+                                <div class="avatar bg-2"
+                                     style="width:32px; height:32px; background:#F5EFE6; color:#827568;">ЕС
+                                </div>
+                                <div style="display:flex; flex-direction:column; gap:2px;">
+                                    <span style="font-weight:600; font-size:13px; color:#1A1A1A;">Елена Смирнова</span>
+                                </div>
+                            </div>
+                            <div class="col-role">
+                                <select class="form-select" style="height:32px; padding:0 8px; font-size:12px;">
+                                    <option>Руководитель</option>
+                                    <option>Редактор</option>
+                                    <option>Комментатор</option>
+                                    <option selected>Читатель</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="settings-col-side" style="display: flex; flex-direction: column; gap: 24px;">
+                <div class="card meta-card">
+                    <h3 class="meta-title">Проекты организации (2)</h3>
+                    <div class="meta-divider"></div>
+
+                    <a href="board.html" class="comment-item" style="text-decoration: none; align-items: center;">
+                        <div class="avatar bg-1" style="border-radius: 4px;">ПМ</div>
+                        <div class="comment-content">
+                            <div class="comment-author">Последний маяк</div>
+                            <div class="comment-text" style="color:#827568;">Обновлен сегодня</div>
+                        </div>
+                    </a>
+
+                    <a href="board.html" class="comment-item" style="text-decoration: none; align-items: center;">
+                        <div class="avatar bg-2" style="border-radius: 4px;">ГБ</div>
+                        <div class="comment-content">
+                            <div class="comment-author">Город без вывесок</div>
+                            <div class="comment-text" style="color:#827568;">Обновлен вчера</div>
+                        </div>
+                    </a>
+
+                    <button class="btn btn-secondary btn-block btn-sm action-btn" style="margin-top: 12px;"
+                            onclick="window.location.href='projects.html?action=create'">Создать проект
+                    </button>
+                </div>
+
+                <div class="card meta-card">
+                    <h3 class="meta-title">Сводка активности</h3>
+                    <div class="meta-divider"></div>
+                    <ul class="recent-list">
+                        <li>
+                            <div class="list-item-content">
+                                <span class="item-title" style="font-size: 13px;">Денис Орлов <span
+                                        style="font-weight:400; color:#827568;">оставил 3 комментария</span></span>
+                                <span class="item-meta">Проект: Последний маяк · 2 часа назад</span>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="list-item-content">
+                                <span class="item-title" style="font-size: 13px;">Илья Лебедев <span
+                                        style="font-weight:400; color:#827568;">переместил 1 сцену</span></span>
+                                <span class="item-meta">Проект: Последний маяк · 5 часов назад</span>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="list-item-content">
+                                <span class="item-title" style="font-size: 13px;">Мария Волкова <span
+                                        style="font-weight:400; color:#827568;">добавила 2 сцены</span></span>
+                                <span class="item-meta">Проект: Город без вывесок · вчера</span>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </main>
+</div>
+
+<!-- Глобальное прибитое меню снизу -->
+<nav class="bottom-dock">
+    <a href="profile.html" class="dock-item">Профиль</a>
+    <a href="organizations.html" class="dock-item active">Организации</a>
+    <a href="projects.html" class="dock-item">Проекты</a>
+    <a href="board.html" class="dock-item">Доска</a>
+    <a href="characters.html" class="dock-item">База</a>
+    <a href="settings.html" class="dock-item">Настройки</a>
+</nav>
+
+<div id="toast-invite" class="toast"
+     style="position: fixed; bottom: 80px; right: 24px; background: #3F745C; color: #FFFCF4; padding: 14px 24px; border-radius: 8px; box-shadow: 0 4px 16px rgba(63, 116, 92, 0.2); font-size: 14px; font-weight: 500; transform: translateY(150px); opacity: 0; transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), opacity 0.4s; z-index: 2000; display: flex; align-items: center; gap: 10px;">
+    <span style="font-size: 18px;">✓</span> <span id="toast-invite-text">Приглашение отправлено</span>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+
+        const toggleBtn = document.querySelector('.toggle-sidebar-btn');
+        const sidebar = document.getElementById('app-sidebar');
+        if (toggleBtn && sidebar) {
+            toggleBtn.addEventListener('click', () => {
+                sidebar.classList.toggle('collapsed');
+            });
+        }
+
+        const orgSwitcher = document.getElementById('org-switcher');
+        const settingsContent = document.getElementById('org-settings-content');
+
+        if (orgSwitcher && settingsContent) {
+            orgSwitcher.addEventListener('change', () => {
+                settingsContent.style.opacity = '0.3';
+                setTimeout(() => {
+                    settingsContent.style.opacity = '1';
+                }, 300);
+            });
+        }
+
+        function createOverlay() {
+            const overlay = document.createElement('div');
+            overlay.style.position = 'fixed'; overlay.style.top = '0'; overlay.style.left = '0';
+            overlay.style.width = '100%'; overlay.style.height = '100%';
+            overlay.style.backgroundColor = 'rgba(48, 39, 28, 0.5)';
+            overlay.style.zIndex = '1000'; overlay.style.display = 'flex';
+            overlay.style.alignItems = 'center'; overlay.style.justifyContent = 'center';
+            overlay.style.backdropFilter = 'blur(2px)';
+            return overlay;
+        }
+
+        function getThemeColors() {
+            const isDark = document.body.classList.contains('dark-theme');
+            return {
+                bg: isDark ? '#24211E' : '#FFFFFF',
+                text: isDark ? '#F4E9D8' : '#1A1A1A',
+                inputBg: isDark ? '#1A1816' : '#FFFFFF',
+                border: isDark ? '#302B26' : '#E8DDC7'
+            };
+        }
+
+        function showToast(message) {
+            const toast = document.getElementById('toast-invite');
+            const textEl = document.getElementById('toast-invite-text');
+            if(toast && textEl) {
+                textEl.innerText = message;
+                toast.style.transform = 'translateY(0)';
+                toast.style.opacity = '1';
+
+                setTimeout(() => {
+                    toast.style.transform = 'translateY(150px)';
+                    toast.style.opacity = '0';
+                }, 3000);
+            }
+        }
+
+        function addParticipantToTable(name, subtext, shortName, role, isPending, color = '#827568') {
+            const table = document.querySelector('.participants-table');
+            if (!table) return;
+
+            const row = document.createElement('div');
+            row.className = 'table-row';
+            if (isPending) row.style.opacity = '0.5';
+
+            row.innerHTML = `
+              <div class="col-user">
+                <div class="avatar" style="width:32px; height:32px; background:${color}; color:#FFF; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:11px; font-weight:bold;">${shortName}</div>
+                <div style="display:flex; flex-direction:column; gap:2px;">
+                  <span style="font-weight:600; font-size:13px; color:#1A1A1A;">${name}</span>
+                  <span style="font-size:11px; color:#827568;">${isPending ? 'Ожидает ответа · ' + subtext : subtext}</span>
+                </div>
+              </div>
+              <div class="col-role">
+                <select class="form-select" style="height:32px; padding:0 8px; font-size:12px;">
+                  <option ${role === 'Руководитель' ? 'selected' : ''}>Руководитель</option>
+                  <option ${role === 'Редактор' ? 'selected' : ''}>Редактор</option>
+                  <option ${role === 'Комментатор' ? 'selected' : ''}>Комментатор</option>
+                  <option ${role === 'Читатель' ? 'selected' : ''}>Читатель</option>
+                </select>
+              </div>
+            `;
+            table.appendChild(row);
+
+            const counterEl = document.getElementById('team-counter');
+            if (counterEl) {
+                 const count = table.querySelectorAll('.table-row').length - 1;
+                 counterEl.innerText = `Команда организации (${count})`;
+            }
+        }
+
+        const btnInvite = document.getElementById('btn-invite-user');
+        if (btnInvite) {
+            btnInvite.addEventListener('click', () => {
+                const overlay = createOverlay();
+                const colors = getThemeColors();
+
+                const modal = document.createElement('div');
+                modal.className = 'card';
+                modal.style.cssText = `width: 500px; padding: 32px; display: flex; flex-direction: column; gap: 20px; background: ${colors.bg}; border: 1px solid ${colors.border};`;
+
+                modal.innerHTML = `
+                    <h3 style="margin: 0; color: ${colors.text}; font-size: 20px;">Пригласить участника</h3>
+
+                    <div style="border: 1px solid ${colors.border}; border-radius: 8px; padding: 16px; background: ${document.body.classList.contains('dark-theme') ? '#1F1C19' : '#FFFCF4'};">
+                        <h4 style="margin: 0 0 12px 0; font-size: 14px; color: ${colors.text};">По электронной почте</h4>
+                        <div style="display: flex; gap: 8px; margin-bottom: 12px;">
+                            <input type="email" id="invite-email" class="form-input" placeholder="email@example.com" style="flex: 2; background:${colors.inputBg}; color:${colors.text}; border-color:${colors.border};">
+                            <select id="invite-role-email" class="form-select" style="flex: 1; background:${colors.inputBg}; color:${colors.text}; border-color:${colors.border};">
+                                <option value="Редактор">Редактор</option>
+                                <option value="Комментатор">Комментатор</option>
+                                <option value="Читатель">Читатель</option>
+                            </select>
+                        </div>
+                        <button class="btn btn-primary btn-sm btn-block" id="btn-send-email">Отправить письмо</button>
+                    </div>
+
+                    <div class="meta-divider" style="margin: 0; border-top: 1px dashed ${colors.border};"></div>
+
+                    <div style="border: 1px solid ${colors.border}; border-radius: 8px; padding: 16px; background: ${document.body.classList.contains('dark-theme') ? '#1F1C19' : '#FFFCF4'};">
+                        <h4 style="margin: 0 0 12px 0; font-size: 14px; color: ${colors.text};">Из недавних соавторов</h4>
+                        <div style="display: flex; gap: 8px; margin-bottom: 12px;">
+                            <select id="invite-collab" class="form-select" style="flex: 2; background:${colors.inputBg}; color:${colors.text}; border-color:${colors.border};">
+                                <option value="Сергей Иванов|СИ|#904D30">Сергей Иванов</option>
+                                <option value="Алексей Кот|АК|#D18B69">Алексей Кот</option>
+                            </select>
+                            <select id="invite-role-collab" class="form-select" style="flex: 1; background:${colors.inputBg}; color:${colors.text}; border-color:${colors.border};">
+                                <option value="Редактор">Редактор</option>
+                                <option value="Комментатор">Комментатор</option>
+                                <option value="Читатель">Читатель</option>
+                            </select>
+                        </div>
+                        <button class="btn btn-secondary btn-sm btn-block" id="btn-add-collab">Добавить напрямую</button>
+                    </div>
+
+                    <div style="display: flex; justify-content: flex-end; margin-top: 8px;">
+                        <button class="btn btn-secondary btn-sm modal-close" style="background:transparent; color:${colors.text}; border-color:${colors.border};">Закрыть</button>
+                    </div>
+                `;
+
+                modal.querySelector('#btn-send-email').addEventListener('click', () => {
+                    const emailInput = modal.querySelector('#invite-email');
+                    const email = emailInput.value.trim();
+
+                    if (!email) {
+                        emailInput.style.borderColor = 'red';
+                        return;
+                    }
+
+                    const role = modal.querySelector('#invite-role-email').value;
+                    const shortName = email.substring(0,2).toUpperCase();
+
+                    addParticipantToTable(email, email, shortName, role, true, '#BCAF9E');
+                    showToast('Приглашение отправлено на почту!');
+                    overlay.remove();
+                });
+
+                modal.querySelector('#btn-add-collab').addEventListener('click', () => {
+                    const collabData = modal.querySelector('#invite-collab').value.split('|');
+                    const name = collabData[0];
+                    const short = collabData[1];
+                    const color = collabData[2];
+                    const role = modal.querySelector('#invite-role-collab').value;
+
+                    addParticipantToTable(name, 'Из списка контактов', short, role, false, color);
+                    showToast('Участник успешно добавлен в команду!');
+                    overlay.remove();
+                });
+
+                modal.querySelector('.modal-close').addEventListener('click', () => overlay.remove());
+                overlay.appendChild(modal);
+                document.body.appendChild(overlay);
+            });
+        }
+    });
+</script>
+</body>
+</html>

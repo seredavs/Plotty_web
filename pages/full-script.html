@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Plotty - Сценарий целиком</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Lora:ital,wght@0,400;0,600;1,400&family=Montserrat:wght@400&display=swap"
+          rel="stylesheet">
+    <link rel="stylesheet" href="../css/main.css">
+    <link rel="stylesheet" href="../css/components.css">
+    <style>
+        .sidebar { transition: width 0.3s ease, min-width 0.3s ease, padding 0.3s ease; overflow: hidden; padding-top: 64px !important; }
+        .sidebar.collapsed { width: 0 !important; min-width: 0 !important; padding-left: 0; padding-right: 0; border-right: none; }
+        .toggle-sidebar-btn { position: fixed; left: 24px; top: 24px; z-index: 1000; background: #FFFCF4; border: 1px solid #E8DDC7; border-radius: 6px; padding: 6px 12px; cursor: pointer; color: #4A3728; font-size: 16px; transition: background 0.2s; }
+        .toggle-sidebar-btn:hover { background: #F0DFCE; }
+        .main-content { padding-left: 24px; padding-right: 32px; box-sizing: border-box; transition: opacity 0.2s ease; }
+
+        .back-to-global { display: flex; align-items: center; gap: 8px; color: #827568; font-size: 12px; font-weight: 500; padding: 16px; text-decoration: none; border-bottom: 1px solid #E8DDC7; transition: color 0.2s, background 0.2s; }
+        .back-to-global:hover { color: #1A1A1A; background: #F5EFE6; }
+
+        .act-toggle { cursor: pointer; display: flex; justify-content: space-between; align-items: center; user-select: none; }
+        .act-toggle:hover { background: #F5EFE6; }
+        .act-content { display: none; }
+        .act-content.expanded { display: block; }
+        .chevron { transition: transform 0.2s; font-size: 10px; color: #827568; }
+        .act-toggle.expanded .chevron { transform: rotate(90deg); }
+
+        /* Стили для имитации страницы сценария */
+        .script-page {
+            background: #FFFFFF;
+            padding: 60px 80px;
+            box-shadow: 0 4px 24px rgba(74, 55, 40, 0.04);
+            border: 1px solid #E8DDC7;
+            min-height: 800px;
+            margin-bottom: 32px;
+        }
+
+        .script-toolbar {
+            display: none;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 24px;
+            background: #F5EFE6;
+            border: 1px solid #E8DDC7;
+            border-bottom: none;
+            border-radius: 8px 8px 0 0;
+            margin-bottom: 0;
+        }
+
+        /* Убираем обводку при редактировании */
+        #raw-content:focus { outline: none; }
+    </style>
+</head>
+<body>
+
+<button class="toggle-sidebar-btn" title="Скрыть/показать меню">☰</button>
+
+<div class="app-layout">
+    <aside class="sidebar" id="app-sidebar">
+        <a href="projects.html" class="back-to-global">
+            <span>←</span> К списку проектов
+        </a>
+
+        <div class="sidebar-section-title">ВЫБРАТЬ ПРОЕКТ</div>
+        <nav class="sidebar-nav" style="padding-bottom: 12px;">
+            <select id="project-switcher" class="form-select"
+                    style="width: 100%; background: transparent; border-color: #E8DDC7; color: #1A1A1A;">
+                <option selected>Последний маяк</option>
+                <option>Город без вывесок</option>
+            </select>
+        </nav>
+
+        <div class="sidebar-divider"></div>
+        <nav class="sidebar-nav">
+            <a href="board.html" class="sidebar-item">Доска сюжета</a>
+            <a href="history.html" class="sidebar-item">История ревизий</a>
+        </nav>
+
+        <div class="sidebar-divider"></div>
+        <div class="sidebar-section-title">СЦЕНЫ</div>
+        <nav class="sidebar-nav">
+            <div>
+                <div class="sidebar-item act-toggle expanded"><span>I. Возвращение</span> <span class="chevron">▶</span>
+                </div>
+                <div class="sidebar-sub-nav act-content expanded">
+                    <a href="scene-01.html" class="sidebar-sub-item">· 01 · Письмо отца</a>
+                    <a href="scene-02.html" class="sidebar-sub-item">· 02 · На причале</a>
+                    <a href="scene.html" class="sidebar-sub-item">· 03 · Свет в тумане</a>
+                </div>
+            </div>
+            <div>
+                <div class="sidebar-item act-toggle"><span>II. Тишина</span> <span class="chevron">▶</span></div>
+                <div class="sidebar-sub-nav act-content">
+                    <a href="scene.html" class="sidebar-sub-item">· 04 · Закрытая дверь</a>
+                    <a href="scene.html" class="sidebar-sub-item">· 05 · Старые записи</a>
+                    <a href="scene.html" class="sidebar-sub-item">· 06 · Шторм</a>
+                </div>
+            </div>
+            <div>
+                <div class="sidebar-item act-toggle"><span>III. Новый свет</span> <span class="chevron">▶</span></div>
+                <div class="sidebar-sub-nav act-content">
+                    <a href="scene.html" class="sidebar-sub-item">· 07 · Выбор Анны</a>
+                    <a href="scene.html" class="sidebar-sub-item">· 08 · Последняя ночь</a>
+                    <a href="scene.html" class="sidebar-sub-item">· 09 · Первый луч</a>
+                </div>
+            </div>
+        </nav>
+
+        <div class="sidebar-divider"></div>
+        <div class="sidebar-section-title">КОМАНДА</div>
+        <nav class="sidebar-nav">
+            <a href="../participants.html" class="sidebar-item">Участники</a>
+        </nav>
+    </aside>
+
+    <main class="main-content" id="script-content-wrapper" style="padding-top: 24px; padding-bottom: 100px;">
+        <header class="page-header"
+                style="margin-bottom: 24px; display: flex; justify-content: space-between; align-items: flex-start; text-align: left;">
+            <div class="header-text">
+                <h1 class="page-title">Сценарий целиком</h1>
+                <p class="page-desc">Сплошной текст «Последнего маяка». Все сцены в одном документе.</p>
+            </div>
+            <div style="display: flex; gap: 12px; align-items: center;">
+                <button class="btn btn-secondary btn-sm" id="btn-export-pdf">Экспорт в PDF</button>
+                <button class="btn btn-secondary btn-sm" id="btn-edit-script">Редактировать текст</button>
+                <button class="btn btn-primary btn-sm" id="btn-save-script" style="display: none;">Сохранить</button>
+            </div>
+        </header>
+
+        <div class="editor-layout">
+            <div style="width: 100%; max-width: 900px; margin: 0 auto;">
+
+                <!-- Панель инструментов редактирования -->
+                <div class="script-toolbar" id="edit-toolbar">
+                    <div style="display: flex; gap: 8px;">
+                        <button class="btn btn-secondary btn-sm" id="btn-bold"
+                                style="height: 32px; width: 32px; padding: 0; font-weight: bold; background: #FFF;">Ж
+                        </button>
+                        <button class="btn btn-secondary btn-sm" id="btn-italic"
+                                style="height: 32px; width: 32px; padding: 0; font-style: italic; background: #FFF;">К
+                        </button>
+                        <select class="form-select"
+                                style="height: 32px; padding: 0 8px; font-size: 12px; border-color: #E8DDC7; width: 120px;">
+                            <option>Действие</option>
+                            <option>Имя персонажа</option>
+                            <option>Реплика</option>
+                            <option>Ремарка</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Страница сценария -->
+                <div class="script-page" id="script-page-container">
+
+                    <!-- Режим чтения -->
+                    <div id="formatted-content">
+                        <div class="scene-heading" style="margin-top: 0;">1. ИНТ. КВАРТИРА АННЫ — ДЕНЬ</div>
+                        <div class="action-text">Коробки наполовину собраны. Пылинки танцуют в луче света. АННА сидит на
+                            полу, перебирая старые бумаги.
+                        </div>
+                        <div class="action-text">Она находит плотный желтоватый конверт. Внутри — письмо и выцветшая
+                            карта с координатами.
+                        </div>
+                        <div class="dialogue-block">
+                            <div class="character-name">АННА</div>
+                            <div class="dialogue-text">(шепотом)<br>Так вот где ты был всё это время...</div>
+                        </div>
+
+                        <div class="scene-heading" style="margin-top: 40px;">2. НАТ. СТАРЫЙ ПРИЧАЛ — ДЕНЬ</div>
+                        <div class="action-text">Ветер треплет полы пальто. АННА сходит с небольшого катера на
+                            деревянный настил. Доски угрожающе скрипят. Посёлок словно вымер.
+                        </div>
+                        <div class="action-text">Она оглядывается. Лишь вдалеке на скале возвышается темный силуэт
+                            маяка.
+                        </div>
+
+                        <div class="scene-heading" style="margin-top: 40px;">3. НАТ. МАЯК — ВЕЧЕР</div>
+                        <div class="action-text">Туман стирает линию горизонта. АННА стоит у подножия маяка. В руке —
+                            письмо отца, сложенное вчетверо.
+                        </div>
+                        <div class="action-text">Наверху скрипит железная рама. Анна поднимает голову. За стеклом фонаря
+                            появляется тёплая полоса.
+                        </div>
+
+                        <div class="dialogue-block">
+                            <div class="character-name">АННА</div>
+                            <div class="dialogue-text">Ты ведь обещал, что свет не погаснет.</div>
+                        </div>
+
+                        <div class="action-text">Дверь приоткрывается. СЕРГЕЙ стоит на пороге, заслоняя собой лестницу.
+                            На его ладони — старый латунный ключ.
+                        </div>
+
+                        <div class="dialogue-block">
+                            <div class="character-name">СЕРГЕЙ</div>
+                            <div class="dialogue-text">Некоторые обещания переживают людей.</div>
+                        </div>
+                    </div>
+
+                    <!-- Режим редактирования -->
+                    <div id="raw-content" contenteditable="true"
+                         style="display: none; width: 100%; min-height: 500px; border: none; font-family: 'Lora', serif; font-size: 15px; line-height: 1.6; color: #1A1A1A; background: transparent; white-space: pre-wrap;">
+                        1. ИНТ. КВАРТИРА АННЫ — ДЕНЬ
+
+                        Коробки наполовину собраны. Пылинки танцуют в луче света. АННА сидит на полу, перебирая старые
+                        бумаги.
+                        Она находит плотный желтоватый конверт. Внутри — письмо и выцветшая карта с координатами.
+
+                        АННА
+                        (шепотом)
+                        Так вот где ты был всё это время...
+
+                        2. НАТ. СТАРЫЙ ПРИЧАЛ — ДЕНЬ
+
+                        Ветер треплет полы пальто. АННА сходит с небольшого катера на деревянный настил. Доски угрожающе
+                        скрипят. Посёлок словно вымер.
+                        Она оглядывается. Лишь вдалеке на скале возвышается темный силуэт маяка.
+
+                        3. НАТ. МАЯК — ВЕЧЕР
+
+                        Туман стирает линию горизонта. АННА стоит у подножия маяка. В руке — письмо отца, сложенное
+                        вчетверо.
+                        Наверху скрипит железная рама. Анна поднимает голову. За стеклом фонаря появляется тёплая
+                        полоса.
+
+                        АННА
+                        Ты ведь обещал, что свет не погаснет.
+
+                        Дверь приоткрывается. СЕРГЕЙ стоит на пороге, заслоняя собой лестницу. На его ладони — старый
+                        латунный ключ.
+
+                        СЕРГЕЙ
+                        Некоторые обещания переживают людей.
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+</div>
+<!-- Глобальное прибитое меню снизу -->
+<nav class="bottom-dock">
+    <a href="profile.html" class="dock-item">Профиль</a>
+    <a href="organizations.html" class="dock-item">Организации</a>
+    <a href="projects.html" class="dock-item">Проекты</a>
+    <a href="board.html" class="dock-item active">Доска</a>
+    <a href="characters.html" class="dock-item">База</a>
+    <a href="settings.html" class="dock-item">Настройки</a>
+</nav>
+
+<!-- Уведомление об экспорте -->
+<div id="toast-export" class="toast"
+     style="position: fixed; bottom: 80px; right: 24px; background: #3F745C; color: #FFFCF4; padding: 14px 24px; border-radius: 8px; box-shadow: 0 4px 16px rgba(63, 116, 92, 0.2); font-size: 14px; font-weight: 500; transform: translateY(150px); opacity: 0; transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), opacity 0.4s, background-color 0.3s; z-index: 2000; display: flex; align-items: center; gap: 10px;">
+    <span id="toast-icon" style="font-size: 18px;">⏳</span> <span id="toast-text">Сборка PDF началась...</span>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        // Логика аккордеона бокового меню
+        const actToggles = document.querySelectorAll('.act-toggle');
+        actToggles.forEach(toggle => {
+            toggle.addEventListener('click', () => {
+                toggle.classList.toggle('expanded');
+                const content = toggle.nextElementSibling;
+                if (content.classList.contains('expanded')) {
+                    content.classList.remove('expanded');
+                } else {
+                    content.classList.add('expanded');
+                }
+            });
+        });
+
+        // Скрытие бокового меню
+        const toggleBtn = document.querySelector('.toggle-sidebar-btn');
+        const sidebar = document.getElementById('app-sidebar');
+        if (toggleBtn && sidebar) {
+            toggleBtn.addEventListener('click', () => {
+                sidebar.classList.toggle('collapsed');
+            });
+        }
+
+        // Анимация переключения проектов
+        const projectSwitcher = document.getElementById('project-switcher');
+        const contentWrapper = document.getElementById('script-content-wrapper');
+
+        if (projectSwitcher && contentWrapper) {
+            projectSwitcher.addEventListener('change', () => {
+                contentWrapper.style.opacity = '0.3';
+                setTimeout(() => {
+                    contentWrapper.style.opacity = '1';
+                }, 300);
+            });
+        }
+
+        // Логика переключения режима чтения/редактирования
+        const btnEdit = document.getElementById('btn-edit-script');
+        const btnSave = document.getElementById('btn-save-script');
+        const editToolbar = document.getElementById('edit-toolbar');
+        const scriptPage = document.getElementById('script-page-container');
+        const formattedContent = document.getElementById('formatted-content');
+        const rawContent = document.getElementById('raw-content');
+
+        if (btnEdit && btnSave) {
+            btnEdit.addEventListener('click', () => {
+                btnEdit.style.display = 'none';
+                btnSave.style.display = 'block';
+
+                formattedContent.style.display = 'none';
+                rawContent.style.display = 'block';
+
+                editToolbar.style.display = 'flex';
+                scriptPage.style.borderRadius = '0 0 8px 8px';
+                scriptPage.style.borderTop = 'none';
+
+                rawContent.focus();
+            });
+
+            btnSave.addEventListener('click', () => {
+                btnSave.innerText = 'Сохранение...';
+                btnSave.style.opacity = '0.7';
+
+                setTimeout(() => {
+                    btnSave.style.display = 'none';
+                    btnEdit.style.display = 'block';
+                    btnSave.innerText = 'Сохранить';
+                    btnSave.style.opacity = '1';
+
+                    rawContent.style.display = 'none';
+                    formattedContent.style.display = 'block';
+
+                    editToolbar.style.display = 'none';
+                    scriptPage.style.borderRadius = '8px';
+                    scriptPage.style.borderTop = '1px solid #E8DDC7';
+                }, 600);
+            });
+        }
+
+        // Форматирование текста (Жирный / Курсив)
+        const btnBold = document.getElementById('btn-bold');
+        const btnItalic = document.getElementById('btn-italic');
+
+        if (btnBold) {
+            btnBold.addEventListener('click', (e) => {
+                e.preventDefault();
+                document.execCommand('bold', false, null);
+                rawContent.focus();
+            });
+        }
+
+        if (btnItalic) {
+            btnItalic.addEventListener('click', (e) => {
+                e.preventDefault();
+                document.execCommand('italic', false, null);
+                rawContent.focus();
+            });
+        }
+
+        // Логика экспорта в PDF с анимацией тоста
+        const exportBtn = document.getElementById('btn-export-pdf');
+        const toast = document.getElementById('toast-export');
+        const toastIcon = document.getElementById('toast-icon');
+        const toastText = document.getElementById('toast-text');
+
+        if (exportBtn && toast) {
+            exportBtn.addEventListener('click', () => {
+                // Исходное состояние: загрузка
+                toast.style.background = '#827568';
+                toastIcon.innerText = '⏳';
+                toastText.innerText = 'Сборка PDF началась...';
+
+                toast.style.transform = 'translateY(0)';
+                toast.style.opacity = '1';
+
+                // Через 1.5 секунды меняем на успех
+                setTimeout(() => {
+                    toast.style.background = '#3F745C';
+                    toastIcon.innerText = '✓';
+                    toastText.innerText = 'Файл успешно скачан!';
+
+                    // Убираем уведомление еще через 2.5 секунды
+                    setTimeout(() => {
+                        toast.style.transform = 'translateY(150px)';
+                        toast.style.opacity = '0';
+                    }, 2500);
+                }, 1500);
+            });
+        }
+    });
+</script>
+</body>
+</html>

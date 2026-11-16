@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Plotty - Регистрация</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Lora&family=Montserrat:wght@400&display=swap"
+          rel="stylesheet">
+    <link rel="stylesheet" href="../css/main.css">
+    <link rel="stylesheet" href="../css/components.css">
+</head>
+<body>
+
+<div class="hero-container">
+    <!-- Левая часть (использует стили из main.css) -->
+    <div class="image-card">
+        <img src="https://placehold.co/610x700/4A3728/FFFCF4?text=Plotty+Auth" alt="Обложка Plotty"/>
+        <div class="gradient-overlay"></div>
+        <div class="image-card-content">
+            <div class="image-card-title">Большие истории начинаются с идеи.</div>
+            <div class="image-card-desc">Дайте ей пространство: соберите сюжет, героев и сцены в одном месте.</div>
+            <div class="image-card-subtitle">PLOTTY / ПРОСТРАНСТВО ДЛЯ ИСТОРИЙ</div>
+        </div>
+    </div>
+
+    <!-- Правая часть (форма) -->
+    <div class="content-section auth-section">
+        <div class="text-block">
+            <h1 class="main-heading" style="font-size: 34px;">Создайте аккаунт</h1>
+            <div class="main-desc" style="font-size: 14px;">Начните свою историю в Plotty.</div>
+        </div>
+
+        <!-- Социальная авторизация (только Яндекс, некликабельный вид) -->
+        <div class="social-auth-block">
+            <div class="social-item">
+                <span class="social-icon yandex">Я</span>
+                <span class="social-text">Продолжить с Яндекс</span>
+            </div>
+        </div>
+
+        <div class="divider-text">
+            <div class="line"></div>
+            <span>или по почте</span>
+            <div class="line"></div>
+        </div>
+
+        <form class="auth-form">
+            <div class="form-group">
+                <label class="form-label">Ваше имя</label>
+                <input type="text" class="form-input" placeholder="Как к вам обращаться">
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">Электронная почта</label>
+                <input type="email" class="form-input" placeholder="you@example.com">
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">Пароль</label>
+                <input type="password" class="form-input" placeholder="Придумайте пароль">
+                <div class="form-hint">Не менее 8 символов, включая буквы и цифры.</div>
+            </div>
+
+            <div class="terms-text">
+                Создавая аккаунт, вы принимаете <a href="#">условия использования</a> и <a href="#">политику
+                конфиденциальности</a>.
+            </div>
+
+            <button type="submit" class="btn btn-primary btn-block">Создать аккаунт →</button>
+
+            <div class="login-link">
+                Уже есть аккаунт? <a href="login.html">Войти →</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script src="../js/auth.js"></script>
+
+</body>
+</html>

@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Plotty - Пространство для историй</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Lora:ital,wght@0,400;0,600&family=Montserrat:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        /* БАЗОВЫЕ СТИЛИ ЛЕНДИНГА */
+        :root {
+            --bg-color: #FFFCF4;
+            --text-main: #1A1A1A;
+            --text-muted: #827568;
+            --accent: #904D30;
+            --accent-hover: #7A4027;
+            --border: #E8DDC7;
+            --surface: #F5EFE6;
+        }
+
+        body, html {
+            margin: 0; padding: 0;
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            overflow-x: hidden;
+            scroll-behavior: smooth;
+        }
+
+        a { text-decoration: none; }
+
+        /* НАВИГАЦИЯ */
+        .landing-nav {
+            position: fixed; top: 0; left: 0; right: 0;
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 16px 48px;
+            background: rgba(255, 252, 244, 0.9);
+            backdrop-filter: blur(8px);
+            border-bottom: 1px solid var(--border);
+            z-index: 1000;
+        }
+        .logo { font-family: 'Montserrat', sans-serif; font-weight: 600; font-size: 24px; color: var(--accent); letter-spacing: 1px; }
+        .nav-actions { display: flex; gap: 16px; }
+
+        /* КНОПКИ */
+        .btn {
+            padding: 12px 24px; border-radius: 6px; font-weight: 500; font-size: 14px;
+            cursor: pointer; transition: all 0.2s ease; border: 1px solid transparent;
+            display: inline-flex; justify-content: center; align-items: center;
+        }
+        .btn-primary { background: var(--accent); color: #FFF; }
+        .btn-primary:hover { background: var(--accent-hover); transform: translateY(-1px); box-shadow: 0 4px 12px rgba(144, 77, 48, 0.2); }
+        .btn-secondary { background: transparent; color: var(--text-main); border-color: var(--border); }
+        .btn-secondary:hover { background: var(--surface); color: var(--accent); border-color: var(--accent); }
+
+        /* АНИМАЦИИ */
+        .fade-in-up { opacity: 0; transform: translateY(30px); transition: opacity 0.8s ease, transform 0.8s ease; }
+        .fade-in-up.visible { opacity: 1; transform: translateY(0); }
+        .delay-1 { transition-delay: 0.2s; }
+        .delay-2 { transition-delay: 0.4s; }
+
+        /* ГЛАВНЫЙ ЭКРАН (HERO) */
+        .hero-section {
+            padding: 160px 48px 80px;
+            max-width: 1200px; margin: 0 auto;
+            display: flex; flex-direction: column; align-items: center; text-align: center;
+        }
+        .hero-tag {
+            font-size: 12px; font-weight: 600; color: var(--accent);
+            text-transform: uppercase; letter-spacing: 1px; margin-bottom: 16px;
+            background: rgba(144, 77, 48, 0.1); padding: 6px 12px; border-radius: 100px;
+        }
+        .hero-title {
+            font-family: 'Lora', serif; font-size: 56px; line-height: 1.1;
+            color: var(--text-main); margin: 0 0 24px 0; max-width: 800px;
+        }
+        .hero-desc {
+            font-size: 18px; color: var(--text-muted); line-height: 1.6;
+            max-width: 600px; margin: 0 0 40px 0;
+        }
+        .hero-image-wrapper {
+            margin-top: 60px; width: 100%; max-width: 1000px;
+            border-radius: 16px; overflow: hidden;
+            box-shadow: 0 24px 48px rgba(74, 55, 40, 0.15);
+            border: 1px solid var(--border);
+            position: relative;
+        }
+        .hero-image-wrapper img { width: 100%; display: block; }
+
+        /* КАРУСЕЛЬ ФИЧ */
+        .carousel-section { padding: 100px 48px; background: var(--surface); }
+        .carousel-container { max-width: 1200px; margin: 0 auto; display: flex; gap: 48px; align-items: center; }
+
+        .carousel-nav { flex: 1; display: flex; flex-direction: column; gap: 16px; }
+        .carousel-tab {
+            padding: 24px; border-radius: 12px; cursor: pointer; transition: all 0.3s ease;
+            border: 1px solid transparent; border-left: 4px solid transparent;
+        }
+        .carousel-tab h3 { font-family: 'Montserrat', sans-serif; font-size: 18px; margin: 0 0 8px 0; color: var(--text-main); }
+        .carousel-tab p { font-size: 14px; color: var(--text-muted); margin: 0; line-height: 1.5; }
+
+        .carousel-tab.active { background: var(--bg-color); border-color: var(--border); border-left-color: var(--accent); box-shadow: 0 8px 24px rgba(74, 55, 40, 0.05); }
+        .carousel-tab:hover:not(.active) { background: rgba(255, 252, 244, 0.5); }
+
+        .carousel-visuals { flex: 1.5; position: relative; aspect-ratio: 16/10; }
+        .carousel-img {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            object-fit: cover; border-radius: 12px; border: 1px solid var(--border);
+            box-shadow: 0 12px 32px rgba(74, 55, 40, 0.1);
+            opacity: 0; transform: translateX(20px); transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .carousel-img.active { opacity: 1; transform: translateX(0); z-index: 2; }
+
+        /* БЛОК С ОПИСАНИЕМ РОЛЕЙ И БАЗЫ */
+        .features-grid {
+            max-width: 1200px; margin: 100px auto; padding: 0 48px;
+            display: grid; grid-template-columns: 1fr 1fr; gap: 64px; align-items: center;
+        }
+        .feature-text-block h2 { font-family: 'Lora', serif; font-size: 36px; margin: 0 0 16px 0; }
+        .feature-text-block p { font-size: 16px; color: var(--text-muted); line-height: 1.6; margin: 0 0 24px 0; }
+        .feature-list { list-style: none; padding: 0; margin: 0; }
+        .feature-list li {
+            position: relative; padding-left: 28px; margin-bottom: 12px;
+            font-size: 15px; color: var(--text-main);
+        }
+        .feature-list li::before {
+            content: '✓'; position: absolute; left: 0; top: 0;
+            color: var(--accent); font-weight: bold;
+        }
+
+        /* ПОДВАЛ (CTA) */
+        .cta-section {
+            text-align: center; padding: 120px 48px;
+            background: var(--text-main); color: var(--bg-color);
+        }
+        .cta-title { font-family: 'Lora', serif; font-size: 42px; margin: 0 0 24px 0; }
+        .cta-desc { font-size: 18px; opacity: 0.8; max-width: 600px; margin: 0 auto 40px; line-height: 1.6; }
+        .cta-section .btn-primary { background: var(--bg-color); color: var(--text-main); font-size: 16px; padding: 16px 32px; }
+        .cta-section .btn-primary:hover { background: var(--surface); box-shadow: 0 4px 16px rgba(255, 252, 244, 0.2); }
+    </style>
+</head>
+<body>
+
+<!-- Навигация -->
+<nav class="landing-nav">
+    <div class="logo">Plotty</div>
+    <div class="nav-actions">
+        <a href="pages/auth.html" class="btn btn-secondary">Вход</a>
+        <a href="pages/auth.html" class="btn btn-primary">Регистрация</a>
+    </div>
+</nav>
+
+<!-- Главный экран -->
+<section class="hero-section fade-in-up">
+    <div class="hero-tag">Для тех, кто создаёт истории</div>
+    <h1 class="hero-title">Ваша история.<br/>Всё на своих местах.</h1>
+    <p class="hero-desc">От первой идеи до финальной сцены. Создавайте стройную структуру, контролируйте арки героев и работайте в команде без хаоса.</p>
+    <div style="display: flex; gap: 16px;">
+        <a href="pages/auth.html" class="btn btn-primary" style="font-size: 16px; padding: 16px 32px;">Начать бесплатно</a>
+    </div>
+
+    <div class="hero-image-wrapper fade-in-up delay-1">
+        <!-- СЮДА НУЖЕН СКРИНШОТ ДОСКИ -->
+        <img src="images/hero-board.png" onerror="this.src='https://placehold.co/1000x600/E8DDC7/4A3728?text=СКРИНШОТ:+hero-board.png'" alt="Интерфейс Plotty">
+    </div>
+</section>
+
+<!-- Интерактивная карусель возможностей -->
+<section class="carousel-section">
+    <div class="carousel-container fade-in-up">
+        <div class="carousel-nav">
+            <div class="carousel-tab active" data-target="0">
+                <h3>Канбан-доска сюжета</h3>
+                <p>Организуйте акты и сцены с помощью визуальных карточек. Меняйте порядок перетаскиванием, чтобы перестраивать структуру истории без переписывания всего текста.</p>
+            </div>
+            <div class="carousel-tab" data-target="1">
+                <h3>Умный редактор сцен</h3>
+                <p>Текст привязан к карточкам. Форматируйте сценарий, быстро переключайтесь между репликами и действиями. Структура и содержание всегда синхронизированы.</p>
+            </div>
+            <div class="carousel-tab" data-target="2">
+                <h3>История ревизий (Diff)</h3>
+                <p>Сравнивайте версии сцен бок о бок. Добавленный текст подсвечивается зеленым, удаленный — красным. Мгновенно восстанавливайте удачные идеи.</p>
+            </div>
+            <div class="carousel-tab" data-target="3">
+                <h3>Командная работа</h3>
+                <p>Гибкое распределение ролей: Директор, Руководитель проекта, Редактор и Комментатор. Обсуждайте сцены прямо в редакторе.</p>
+            </div>
+        </div>
+
+        <div class="carousel-visuals">
+            <!-- СЮДА НУЖНЫ СКРИНШОТЫ -->
+            <img src="images/hero-board.png" class="carousel-img active" data-id="0" onerror="this.src='https://placehold.co/800x500/E8DDC7/4A3728?text=СКРИНШОТ:+Доска'" alt="Доска">
+            <img src="images/slide-editor.png" class="carousel-img" data-id="1" onerror="this.src='https://placehold.co/800x500/E8DDC7/4A3728?text=СКРИНШОТ:+slide-editor.png'" alt="Редактор">
+            <img src="images/slide-history.png" class="carousel-img" data-id="2" onerror="this.src='https://placehold.co/800x500/E8DDC7/4A3728?text=СКРИНШОТ:+slide-history.png'" alt="История">
+            <img src="images/slide-team.png" class="carousel-img" data-id="3" onerror="this.src='https://placehold.co/800x500/E8DDC7/4A3728?text=СКРИНШОТ:+slide-team.png'" alt="Команда">
+        </div>
+    </div>
+</section>
+
+<!-- Текстово-графические блоки (Фичи) -->
+<section class="features-grid fade-in-up">
+    <!-- СЮДА НУЖЕН СКРИНШОТ БАЗЫ ЗНАНИЙ -->
+    <img src="images/feature-cards.png" style="width: 100%; border-radius: 12px; box-shadow: 0 12px 32px rgba(74, 55, 40, 0.1);" onerror="this.src='https://placehold.co/600x600/E8DDC7/4A3728?text=СКРИНШОТ:+feature-cards.png'" alt="База знаний">
+    <div class="feature-text-block">
+        <h2>База знаний всегда под рукой</h2>
+        <p>Не держите всё в голове. Создавайте карточки персонажей и локаций, прописывайте их цели и конфликты. Отмечайте, в каких сценах они появляются, чтобы не терять детали и видеть арку героя целиком.</p>
+        <ul class="feature-list">
+            <li>Цветовое кодирование персонажей</li>
+            <li>Отслеживание появления в конкретных актах</li>
+            <li>Единый реестр локаций с референсами</li>
+        </ul>
+    </div>
+</section>
+
+<section class="features-grid fade-in-up" style="margin-top: 0;">
+    <div class="feature-text-block">
+        <h2>Одна история — одна команда</h2>
+        <p>Plotty объединяет работу сценаристов, редакторов и режиссеров в единых Организациях. Больше никаких пересылок файлов по почте — работайте над проектом параллельно, обсуждайте правки в комментариях к сценам и экспортируйте сводные таблицы.</p>
+        <ul class="feature-list">
+            <li>Разграничение прав: от Директора до Комментатора</li>
+            <li>Приватные проекты внутри студии</li>
+            <li>Экспорт данных в один клик</li>
+        </ul>
+    </div>
+    <img src="https://placehold.co/600x600/F5EFE6/904D30?text=Надёжное+хранение+ревизий" style="width: 100%; border-radius: 12px; box-shadow: 0 12px 32px rgba(74, 55, 40, 0.1);" alt="Надежность">
+</section>
+
+<!-- Подвал CTA -->
+<section class="cta-section fade-in-up">
+    <h2 class="cta-title">Готовы рассказать свою историю?</h2>
+    <p class="cta-desc">Создайте бесплатный аккаунт и начните организовывать ваши сценарии в удобном пространстве.</p>
+    <a href="pages/auth.html" class="btn btn-primary">Зарегистрироваться в Plotty</a>
+</section>
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        // Анимация при скролле
+        const observerOptions = { root: null, rootMargin: '0px', threshold: 0.1 };
+        const observer = new IntersectionObserver((entries, observer) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.fade-in-up').forEach(el => observer.observe(el));
+
+        // Логика карусели
+        const tabs = document.querySelectorAll('.carousel-tab');
+        const images = document.querySelectorAll('.carousel-img');
+
+        tabs.forEach(tab => {
+            tab.addEventListener('click', () => {
+                // Убираем активный класс у всех
+                tabs.forEach(t => t.classList.remove('active'));
+                images.forEach(img => img.classList.remove('active'));
+
+                // Добавляем активный класс нажатому табу и соответствующей картинке
+                tab.classList.add('active');
+                const targetId = tab.getAttribute('data-target');
+                document.querySelector(`.carousel-img[data-id="${targetId}"]`).classList.add('active');
+            });
+        });
+    });
+</script>
+</body>
+</html>

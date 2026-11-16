@@ -1,0 +1,603 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Plotty - Локации</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Lora:ital,wght@0,400;0,600;1,400&family=Montserrat:wght@400&display=swap"
+          rel="stylesheet">
+    <link rel="stylesheet" href="../css/main.css">
+    <link rel="stylesheet" href="../css/components.css">
+    <style>
+        .sidebar { transition: width 0.3s ease, min-width 0.3s ease, padding 0.3s ease; overflow: hidden; padding-top: 64px !important; }
+        .sidebar.collapsed { width: 0 !important; min-width: 0 !important; padding-left: 0; padding-right: 0; border-right: none; }
+        .toggle-sidebar-btn { position: fixed; left: 24px; top: 24px; z-index: 1000; background: #FFFCF4; border: 1px solid #E8DDC7; border-radius: 6px; padding: 6px 12px; cursor: pointer; color: #4A3728; font-size: 16px; transition: background 0.2s; }
+        .toggle-sidebar-btn:hover { background: #F0DFCE; }
+        .main-content { padding-left: 24px; box-sizing: border-box; transition: opacity 0.2s ease; }
+
+        @media (min-width: 769px) { .bottom-dock { display: none !important; } }
+
+        .back-to-global { display: flex; align-items: center; gap: 8px; color: #827568; font-size: 12px; font-weight: 500; padding: 16px; text-decoration: none; border-bottom: 1px solid #E8DDC7; transition: color 0.2s, background 0.2s; }
+        .back-to-global:hover { color: #1A1A1A; background: #F5EFE6; }
+
+        .locations-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 24px; align-items: stretch; }
+        .location-card { cursor: pointer; transition: transform 0.2s, box-shadow 0.2s; border: 1px solid #E8DDC7; overflow: hidden; padding: 0; display: flex; flex-direction: column; background: #FFFCF4; border-radius: 8px; }
+        .location-card:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(144, 77, 48, 0.08); border-color: #904D30; }
+
+        .location-image { width: 100%; height: 160px; object-fit: cover; border-bottom: 1px solid #E8DDC7; }
+        .location-body { padding: 20px; display: flex; flex-direction: column; gap: 8px; flex: 1; }
+        .btn-secondary.active { background: #904D30 !important; color: #FFFCF4 !important; border-color: #904D30 !important; }
+
+        .act-toggle { cursor: pointer; display: flex; justify-content: space-between; align-items: center; user-select: none; }
+        .act-toggle:hover { background: #F5EFE6; }
+        .act-content { display: none; }
+        .act-content.expanded { display: block; }
+        .chevron { transition: transform 0.2s; font-size: 10px; color: #827568; }
+        .act-toggle.expanded .chevron { transform: rotate(90deg); }
+        .bottom-dock {
+    display: flex !important;
+    z-index: 9999 !important;
+}
+    </style>
+</head>
+<body>
+<button class="toggle-sidebar-btn" title="Скрыть/показать меню">☰</button>
+
+<div class="app-layout">
+    <aside class="sidebar" id="app-sidebar">
+        <a href="projects.html" class="back-to-global">
+            <span>←</span> К списку проектов
+        </a>
+
+        <div class="sidebar-section-title">ВЫБРАТЬ ПРОЕКТ</div>
+        <nav class="sidebar-nav" style="padding-bottom: 12px;">
+            <select id="project-switcher" class="form-select"
+                    style="width: 100%; background: transparent; border-color: #E8DDC7; color: #1A1A1A;">
+                <option selected>Последний маяк</option>
+                <option>Город без вывесок</option>
+            </select>
+        </nav>
+
+        <div class="sidebar-divider"></div>
+        <nav class="sidebar-nav">
+            <a href="board.html" class="sidebar-item">Доска сюжета</a>
+            <a href="history.html" class="sidebar-item">История ревизий</a>
+        </nav>
+
+        <div class="sidebar-divider"></div>
+        <div class="sidebar-section-title">СЦЕНЫ</div>
+        <nav class="sidebar-nav">
+            <div>
+                <div class="sidebar-item act-toggle expanded"><span>I. Возвращение</span> <span class="chevron">▶</span>
+                </div>
+                <div class="sidebar-sub-nav act-content expanded">
+                    <a href="scene-01.html" class="sidebar-sub-item">· 01 · Письмо отца</a>
+                    <a href="scene-02.html" class="sidebar-sub-item">· 02 · На причале</a>
+                    <a href="scene.html" class="sidebar-sub-item">· 03 · Свет в тумане</a>
+                </div>
+            </div>
+            <div>
+                <div class="sidebar-item act-toggle"><span>II. Тишина</span> <span class="chevron">▶</span></div>
+                <div class="sidebar-sub-nav act-content">
+                    <a href="scene.html" class="sidebar-sub-item">· 04 · Закрытая дверь</a>
+                    <a href="scene.html" class="sidebar-sub-item">· 05 · Старые записи</a>
+                    <a href="scene.html" class="sidebar-sub-item">· 06 · Шторм</a>
+                </div>
+            </div>
+            <div>
+                <div class="sidebar-item act-toggle"><span>III. Новый свет</span> <span class="chevron">▶</span></div>
+                <div class="sidebar-sub-nav act-content">
+                    <a href="scene.html" class="sidebar-sub-item">· 07 · Выбор Анны</a>
+                    <a href="scene.html" class="sidebar-sub-item">· 08 · Последняя ночь</a>
+                    <a href="scene.html" class="sidebar-sub-item">· 09 · Первый луч</a>
+                </div>
+            </div>
+        </nav>
+
+        <div class="sidebar-divider"></div>
+        <div class="sidebar-section-title">КОМАНДА</div>
+        <nav class="sidebar-nav">
+            <a href="org-admin.html" class="sidebar-item">Участники</a>
+        </nav>
+    </aside>
+
+    <main class="main-content" id="base-content-wrapper"
+          style="padding-top: 24px; padding-right: 32px; padding-bottom: 100px;">
+        <header class="page-header" style="margin-bottom: 24px;">
+            <div class="header-text">
+                <h1 class="page-title">Локации</h1>
+                <p class="page-desc" id="loc-count-text">Загрузка локаций...</p>
+            </div>
+            <button class="btn btn-secondary btn-sm action-btn" id="create-loc-btn">Создать локацию</button>
+        </header>
+
+        <div class="filters-bar" style="margin-bottom: 24px;">
+            <div class="search-input"><input type="text" id="loc-search" placeholder="Поиск по названию…"></div>
+            <div style="display: flex; gap: 8px;">
+                <button class="btn btn-secondary btn-sm" onclick="window.location.href='characters.html'">Персонажи
+                </button>
+                <button class="btn btn-secondary btn-sm active" onclick="window.location.href='locations.html'">
+                    Локации
+                </button>
+            </div>
+            <div class="flex-spacer"></div>
+        </div>
+
+        <section class="locations-grid" id="locations-grid">
+            <!-- Локация 1 -->
+            <div class="card location-card loc-edit-trigger" data-refs="https://pinterest.com/lighthouse">
+                <img src="https://placehold.co/556x160/4A3728/FFFCF4?text=Маяк" class="location-image" alt="Маяк">
+                <div class="location-body">
+                    <h3 class="card-title loc-title" style="margin: 0; font-size: 16px; color: #1A1A1A;">Маяк</h3>
+                    <span class="badge badge-accent loc-type" style="align-self:flex-start;">ИНТ. / НАТ.</span>
+                    <p class="card-desc loc-desc" style="margin: 0; font-size: 13px; color: #4A3728; line-height: 1.5;">
+                        Старая башня на краю посёлка. Соль на стекле, скрип лестницы и тёплый свет.</p>
+                    <div class="meta-subtitle" style="margin-top:auto; padding-top: 12px;">СЦЕНЫ</div>
+                    <div class="tag-group loc-scenes" onclick="event.stopPropagation();">
+                        <a href="scene.html" class="badge badge-accent scene-link">03</a>
+                        <a href="scene.html" class="badge badge-accent scene-link">04</a>
+                        <a href="scene.html" class="badge badge-accent scene-link">08</a>
+                        <a href="scene.html" class="badge badge-accent scene-link">09</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Локация 2 -->
+            <div class="card location-card loc-edit-trigger" data-refs="">
+                <img src="https://placehold.co/556x160/4A3728/FFFCF4?text=Старый+причал" class="location-image"
+                     alt="Старый причал">
+                <div class="location-body">
+                    <h3 class="card-title loc-title" style="margin: 0; font-size: 16px; color: #1A1A1A;">Старый
+                        причал</h3>
+                    <span class="badge badge-accent loc-type" style="align-self:flex-start;">НАТ.</span>
+                    <p class="card-desc loc-desc" style="margin: 0; font-size: 13px; color: #4A3728; line-height: 1.5;">
+                        Деревянные настилы, рыбацкие лодки и пустой горизонт. Место встреч.</p>
+                    <div class="meta-subtitle" style="margin-top:auto; padding-top: 12px;">СЦЕНЫ</div>
+                    <div class="tag-group loc-scenes" onclick="event.stopPropagation();">
+                        <a href="scene-02.html" class="badge badge-accent scene-link">02</a>
+                        <a href="scene.html" class="badge badge-accent scene-link">06</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Локация 3 -->
+            <div class="card location-card loc-edit-trigger" data-refs="">
+                <img src="https://placehold.co/556x160/4A3728/FFFCF4?text=Дом+Нины" class="location-image"
+                     alt="Дом Нины">
+                <div class="location-body">
+                    <h3 class="card-title loc-title" style="margin: 0; font-size: 16px; color: #1A1A1A;">Дом Нины</h3>
+                    <span class="badge badge-accent loc-type" style="align-self:flex-start;">ИНТ.</span>
+                    <p class="card-desc loc-desc" style="margin: 0; font-size: 13px; color: #4A3728; line-height: 1.5;">
+                        Деревянный дом с окнами в сад. Пахнет чаем и яблоками. Хранит тайны.</p>
+                    <div class="meta-subtitle" style="margin-top:auto; padding-top: 12px;">СЦЕНЫ</div>
+                    <div class="tag-group loc-scenes" onclick="event.stopPropagation();">
+                        <a href="scene.html" class="badge badge-accent scene-link">05</a>
+                        <a href="scene.html" class="badge badge-accent scene-link">07</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Локация 4 -->
+            <div class="card location-card loc-edit-trigger" data-refs="">
+                <img src="https://placehold.co/556x160/4A3728/FFFCF4?text=Квартира+Анны" class="location-image"
+                     alt="Квартира Анны">
+                <div class="location-body">
+                    <h3 class="card-title loc-title" style="margin: 0; font-size: 16px; color: #1A1A1A;">Квартира
+                        Анны</h3>
+                    <span class="badge badge-accent loc-type" style="align-self:flex-start;">ИНТ.</span>
+                    <p class="card-desc loc-desc" style="margin: 0; font-size: 13px; color: #4A3728; line-height: 1.5;">
+                        Городская квартира с коробками. Чистые стены и ощущение временной жизни.</p>
+                    <div class="meta-subtitle" style="margin-top:auto; padding-top: 12px;">СЦЕНЫ</div>
+                    <div class="tag-group loc-scenes" onclick="event.stopPropagation();">
+                        <a href="scene-01.html" class="badge badge-accent scene-link">01</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Локация 5 -->
+            <div class="card location-card loc-edit-trigger" data-refs="">
+                <img src="https://placehold.co/556x160/4A3728/FFFCF4?text=Чердак" class="location-image" alt="Чердак">
+                <div class="location-body">
+                    <h3 class="card-title loc-title" style="margin: 0; font-size: 16px; color: #1A1A1A;">Пыльный
+                        чердак</h3>
+                    <span class="badge badge-accent loc-type" style="align-self:flex-start;">ИНТ.</span>
+                    <p class="card-desc loc-desc" style="margin: 0; font-size: 13px; color: #4A3728; line-height: 1.5;">
+                        Завалы старых вещей под крышей дома Нины. Лучи света пробиваются через щели.</p>
+                    <div class="meta-subtitle" style="margin-top:auto; padding-top: 12px;">СЦЕНЫ</div>
+                    <div class="tag-group loc-scenes" onclick="event.stopPropagation();">
+                        <a href="scene.html" class="badge badge-accent scene-link">05</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Локация 6 -->
+            <div class="card location-card loc-edit-trigger" data-refs="">
+                <img src="https://placehold.co/556x160/4A3728/FFFCF4?text=Катер" class="location-image" alt="Катер">
+                <div class="location-body">
+                    <h3 class="card-title loc-title" style="margin: 0; font-size: 16px; color: #1A1A1A;">Катер
+                        Виктора</h3>
+                    <span class="badge badge-accent loc-type" style="align-self:flex-start;">НАТ.</span>
+                    <p class="card-desc loc-desc" style="margin: 0; font-size: 13px; color: #4A3728; line-height: 1.5;">
+                        Ржавая посудина, которая еле держится на плаву. Пахнет рыбой и бензином.</p>
+                    <div class="meta-subtitle" style="margin-top:auto; padding-top: 12px;">СЦЕНЫ</div>
+                    <div class="tag-group loc-scenes" onclick="event.stopPropagation();">
+                        <a href="scene-02.html" class="badge badge-accent scene-link">02</a>
+                        <a href="scene.html" class="badge badge-accent scene-link">06</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Локация 7 -->
+            <div class="card location-card loc-edit-trigger" data-refs="">
+                <img src="https://placehold.co/556x160/4A3728/FFFCF4?text=Утес" class="location-image" alt="Скала">
+                <div class="location-body">
+                    <h3 class="card-title loc-title" style="margin: 0; font-size: 16px; color: #1A1A1A;">Утёс за
+                        маяком</h3>
+                    <span class="badge badge-accent loc-type" style="align-self:flex-start;">НАТ.</span>
+                    <p class="card-desc loc-desc" style="margin: 0; font-size: 13px; color: #4A3728; line-height: 1.5;">
+                        Крутой обрыв, о который разбиваются волны. Отсюда виден весь залив.</p>
+                    <div class="meta-subtitle" style="margin-top:auto; padding-top: 12px;">СЦЕНЫ</div>
+                    <div class="tag-group loc-scenes" onclick="event.stopPropagation();">
+                        <a href="scene.html" class="badge badge-accent scene-link">08</a>
+                    </div>
+                </div>
+            </div>
+            <!-- ДЛЯ ФАЙЛА locations.html (Вставить перед закрывающим тегом </section>) -->
+
+            <!-- Локация 8 -->
+            <div class="card location-card loc-edit-trigger" data-refs="">
+                <img src="https://placehold.co/556x160/4A3728/FFFCF4?text=Архив" class="location-image" alt="Архив">
+                <div class="location-body">
+                    <h3 class="card-title loc-title" style="margin: 0; font-size: 16px; color: #1A1A1A;">Поселковый архив</h3>
+                    <span class="badge badge-accent loc-type" style="align-self:flex-start;">ИНТ.</span>
+                    <p class="card-desc loc-desc" style="margin: 0; font-size: 13px; color: #4A3728; line-height: 1.5;">Сырое полуподвальное помещение местной администрации. Бесконечные ряды стеллажей, запах старой бумаги и въевшейся пыли.</p>
+                    <div class="meta-subtitle" style="margin-top:auto; padding-top: 12px;">СЦЕНЫ</div>
+                    <div class="tag-group loc-scenes" onclick="event.stopPropagation();">
+                        <a href="scene.html" class="badge badge-accent scene-link">04</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Локация 9 -->
+            <div class="card location-card loc-edit-trigger" data-refs="https://pinterest.com/tavern">
+                <img src="https://placehold.co/556x160/4A3728/FFFCF4?text=Таверна" class="location-image" alt="Таверна">
+                <div class="location-body">
+                    <h3 class="card-title loc-title" style="margin: 0; font-size: 16px; color: #1A1A1A;">Таверна «Слепая чайка»</h3>
+                    <span class="badge badge-accent loc-type" style="align-self:flex-start;">ИНТ.</span>
+                    <p class="card-desc loc-desc" style="margin: 0; font-size: 13px; color: #4A3728; line-height: 1.5;">Единственный бар в округе. Тусклый свет желтых ламп, гул голосов рыбаков, смешанный запах жареной рыбы и дешёвого эля.</p>
+                    <div class="meta-subtitle" style="margin-top:auto; padding-top: 12px;">СЦЕНЫ</div>
+                    <div class="tag-group loc-scenes" onclick="event.stopPropagation();">
+                        <a href="scene.html" class="badge badge-accent scene-link">05</a>
+                        <a href="scene.html" class="badge badge-accent scene-link">06</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Локация 10 -->
+            <div class="card location-card loc-edit-trigger" data-refs="">
+                <img src="https://placehold.co/556x160/4A3728/FFFCF4?text=Метеостанция" class="location-image" alt="Метеостанция">
+                <div class="location-body">
+                    <h3 class="card-title loc-title" style="margin: 0; font-size: 16px; color: #1A1A1A;">Старая метеостанция</h3>
+                    <span class="badge badge-accent loc-type" style="align-self:flex-start;">НАТ. / ИНТ.</span>
+                    <p class="card-desc loc-desc" style="margin: 0; font-size: 13px; color: #4A3728; line-height: 1.5;">Заброшенная деревянная будка на отшибе скалы. Ржавые приборы, разбитые стекла и непрерывный, пугающий свист ветра в щелях.</p>
+                    <div class="meta-subtitle" style="margin-top:auto; padding-top: 12px;">СЦЕНЫ</div>
+                    <div class="tag-group loc-scenes" onclick="event.stopPropagation();">
+                        <a href="scene.html" class="badge badge-accent scene-link">07</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+</div>
+
+<nav class="bottom-dock">
+    <a href="profile.html" class="dock-item">Профиль</a>
+    <a href="organizations.html" class="dock-item">Организации</a>
+    <a href="projects.html" class="dock-item">Проекты</a>
+    <a href="board.html" class="dock-item">Доска</a>
+    <a href="characters.html" class="dock-item active">База</a>
+    <a href="settings.html" class="dock-item">Настройки</a>
+</nav>
+
+<script src="../js/ui.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        // АККОРДЕОН В МЕНЮ
+        const actToggles = document.querySelectorAll('.act-toggle');
+        actToggles.forEach(toggle => {
+            toggle.addEventListener('click', () => {
+                toggle.classList.toggle('expanded');
+                const content = toggle.nextElementSibling;
+                if (content.classList.contains('expanded')) {
+                    content.classList.remove('expanded');
+                } else {
+                    content.classList.add('expanded');
+                }
+            });
+        });
+
+        // Анимация переключения проектов
+        const projectSwitcher = document.getElementById('project-switcher');
+        const contentWrapper = document.getElementById('base-content-wrapper');
+
+        if (projectSwitcher && contentWrapper) {
+            projectSwitcher.addEventListener('change', () => {
+                contentWrapper.style.opacity = '0.3';
+                setTimeout(() => {
+                    contentWrapper.style.opacity = '1';
+                }, 300);
+            });
+        }
+
+        const grid = document.getElementById('locations-grid');
+        const searchInput = document.getElementById('loc-search');
+        const countText = document.getElementById('loc-count-text');
+
+        function sortCards() {
+            const cards = Array.from(grid.querySelectorAll('.location-card'));
+            cards.sort((a, b) => {
+                const titleA = a.querySelector('.loc-title').innerText.trim().toLowerCase();
+                const titleB = b.querySelector('.loc-title').innerText.trim().toLowerCase();
+                return titleA.localeCompare(titleB, 'ru');
+            });
+            grid.innerHTML = '';
+            cards.forEach(card => grid.appendChild(card));
+        }
+
+        function updateCount() {
+            const visibleCards = Array.from(grid.querySelectorAll('.location-card')).filter(card => card.style.display !== 'none').length;
+            let word = 'локаций';
+            let n = visibleCards % 10;
+            let nn = visibleCards % 100;
+            if (n === 1 && nn !== 11) word = 'локация';
+            else if (n >= 2 && n <= 4 && (nn < 10 || nn >= 20)) word = 'локации';
+
+            countText.innerText = `${visibleCards} ${word} «Последнего маяка» · Места, из которых складывается мир.`;
+        }
+
+        searchInput.addEventListener('input', (e) => {
+            const query = e.target.value.toLowerCase();
+            const cards = grid.querySelectorAll('.location-card');
+            cards.forEach(card => {
+                const title = card.querySelector('.loc-title').innerText.toLowerCase();
+                card.style.display = title.includes(query) ? '' : 'none';
+            });
+            updateCount();
+        });
+
+        sortCards();
+        updateCount();
+
+        function createLocModal(existingCard = null) {
+            let isEdit = !!existingCard;
+
+            let title = isEdit ? existingCard.querySelector('.loc-title').innerText : '';
+            let type = isEdit ? existingCard.querySelector('.loc-type').innerText : 'ИНТ. / НАТ.';
+            let desc = isEdit ? existingCard.querySelector('.loc-desc').innerText : '';
+            let imgSrc = isEdit ? existingCard.querySelector('.location-image').src : '';
+            let refs = isEdit ? existingCard.getAttribute('data-refs') : '';
+
+            let checkedScenes = [];
+            if (isEdit) {
+                const links = Array.from(existingCard.querySelectorAll('.scene-link'));
+                checkedScenes = links.map(a => a.innerText.trim());
+            }
+
+            const overlay = document.createElement('div');
+            overlay.style.position = 'fixed'; overlay.style.top = '0'; overlay.style.left = '0';
+            overlay.style.width = '100%'; overlay.style.height = '100%';
+            overlay.style.backgroundColor = 'rgba(48, 39, 28, 0.5)';
+            overlay.style.zIndex = '1000'; overlay.style.display = 'flex';
+            overlay.style.alignItems = 'center'; overlay.style.justifyContent = 'center';
+            overlay.style.backdropFilter = 'blur(2px)';
+
+            const modal = document.createElement('div');
+            modal.className = 'card';
+            modal.style.width = '520px'; modal.style.padding = '32px';
+            modal.style.display = 'flex'; modal.style.flexDirection = 'column'; modal.style.gap = '20px';
+            modal.style.background = '#FFFCF4';
+
+            modal.innerHTML = `
+                <h3 style="margin: 0; font-size: 20px; color: #1A1A1A;">${isEdit ? 'Редактировать локацию' : 'Новая локация'}</h3>
+
+                <div style="display: flex; gap: 12px; align-items: flex-end;">
+                     <div class="form-group" style="flex: 2; margin: 0;">
+                        <label class="form-label" style="color: #827568;">Название локации</label>
+                        <input type="text" id="loc-name" class="form-input" value="${title}" placeholder="Например: Старый причал">
+                     </div>
+                     <div class="form-group" style="flex: 1; margin: 0;">
+                        <label class="form-label" style="color: #827568;">Тип</label>
+                        <select class="form-select" id="loc-type">
+                            <option value="ИНТ." ${type === 'ИНТ.' ? 'selected' : ''}>ИНТ. (Интерьер)</option>
+                            <option value="НАТ." ${type === 'НАТ.' ? 'selected' : ''}>НАТ. (Натура)</option>
+                            <option value="ИНТ. / НАТ." ${type === 'ИНТ. / НАТ.' ? 'selected' : ''}>ИНТ. / НАТ.</option>
+                        </select>
+                     </div>
+                </div>
+
+                <div class="form-group" style="margin: 0;">
+                    <label class="form-label" style="color: #827568;">Обложка локации</label>
+                    <div style="display: flex; gap: 12px; align-items: center; border: 1px dashed #E8DDC7; padding: 12px; border-radius: 6px; background: #F5EFE6;">
+                        <label class="btn btn-secondary btn-sm" style="cursor: pointer; margin: 0;">
+                            Загрузить файл
+                            <input type="file" id="loc-img-upload" accept="image/*" style="display: none;">
+                        </label>
+                        <span id="loc-img-name" style="font-size: 13px; color: #827568;">${isEdit ? 'Картинка загружена' : 'Файл не выбран'}</span>
+                    </div>
+                </div>
+
+                <div class="form-group" style="margin: 0;">
+                    <label class="form-label" style="color: #827568;">Описание (Атмосфера)</label>
+                    <textarea id="loc-desc" class="form-input" placeholder="Детали, свет, запахи..." style="height: 60px; resize: none; padding: 10px 12px; font-family: inherit;">${desc}</textarea>
+                </div>
+
+                <div class="form-group" style="margin: 0;">
+                    <label class="form-label" style="color: #827568;">Ссылки на референсы (Avito, Pinterest...)</label>
+                    <textarea id="loc-refs" class="form-input" placeholder="Скрыты от просмотра на карточке" style="height: 48px; resize: none; padding: 10px 12px; font-family: inherit; font-size: 12px; color: #4A3728;">${refs}</textarea>
+                </div>
+
+                <div class="form-group" style="margin: 0;">
+                    <label class="form-label" style="color: #827568; margin-bottom: 8px; display: block;">Используется в сценах</label>
+                    <div style="background: #F5EFE6; padding: 12px; border-radius: 6px; border: 1px solid #E8DDC7; max-height: 160px; overflow-y: auto;">
+                        <div style="font-size: 11px; font-weight: 600; color: #827568; margin-bottom: 6px;">Акт I. Возвращение</div>
+                        <div style="display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 12px;">
+                            <label style="color: #1A1A1A; font-size: 13px; display: flex; align-items: center; gap: 4px; cursor: pointer;"><input type="checkbox" id="l-sc-01" ${checkedScenes.includes('01') ? 'checked' : ''}> 01</label>
+                            <label style="color: #1A1A1A; font-size: 13px; display: flex; align-items: center; gap: 4px; cursor: pointer;"><input type="checkbox" id="l-sc-02" ${checkedScenes.includes('02') ? 'checked' : ''}> 02</label>
+                            <label style="color: #1A1A1A; font-size: 13px; display: flex; align-items: center; gap: 4px; cursor: pointer;"><input type="checkbox" id="l-sc-03" ${checkedScenes.includes('03') ? 'checked' : ''}> 03</label>
+                        </div>
+                        <div style="font-size: 11px; font-weight: 600; color: #827568; margin-bottom: 6px;">Акт II. Тишина</div>
+                        <div style="display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 12px;">
+                            <label style="color: #1A1A1A; font-size: 13px; display: flex; align-items: center; gap: 4px; cursor: pointer;"><input type="checkbox" id="l-sc-04" ${checkedScenes.includes('04') ? 'checked' : ''}> 04</label>
+                            <label style="color: #1A1A1A; font-size: 13px; display: flex; align-items: center; gap: 4px; cursor: pointer;"><input type="checkbox" id="l-sc-05" ${checkedScenes.includes('05') ? 'checked' : ''}> 05</label>
+                            <label style="color: #1A1A1A; font-size: 13px; display: flex; align-items: center; gap: 4px; cursor: pointer;"><input type="checkbox" id="l-sc-06" ${checkedScenes.includes('06') ? 'checked' : ''}> 06</label>
+                        </div>
+                        <div style="font-size: 11px; font-weight: 600; color: #827568; margin-bottom: 6px;">Акт III. Новый свет</div>
+                        <div style="display: flex; gap: 12px; flex-wrap: wrap;">
+                            <label style="color: #1A1A1A; font-size: 13px; display: flex; align-items: center; gap: 4px; cursor: pointer;"><input type="checkbox" id="l-sc-07" ${checkedScenes.includes('07') ? 'checked' : ''}> 07</label>
+                            <label style="color: #1A1A1A; font-size: 13px; display: flex; align-items: center; gap: 4px; cursor: pointer;"><input type="checkbox" id="l-sc-08" ${checkedScenes.includes('08') ? 'checked' : ''}> 08</label>
+                            <label style="color: #1A1A1A; font-size: 13px; display: flex; align-items: center; gap: 4px; cursor: pointer;"><input type="checkbox" id="l-sc-09" ${checkedScenes.includes('09') ? 'checked' : ''}> 09</label>
+                        </div>
+                    </div>
+                </div>
+
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 16px; padding-top: 16px; border-top: 1px solid #E8DDC7;">
+                    <div>
+                        ${isEdit ? '<button class="text-btn modal-delete" style="color: #C64343; font-size: 13px; border: none; background: transparent; cursor: pointer; padding: 0; font-weight: 500;">Удалить локацию</button>' : ''}
+                    </div>
+                    <div style="display: flex; gap: 12px;">
+                        <button class="btn btn-secondary btn-sm modal-close">Отмена</button>
+                        <button class="btn btn-primary btn-sm modal-save">Сохранить</button>
+                    </div>
+                </div>
+            `;
+
+            let uploadedImgData = imgSrc;
+            modal.querySelector('#loc-img-upload').addEventListener('change', (e) => {
+                const file = e.target.files[0];
+                if (file) {
+                    modal.querySelector('#loc-img-name').innerText = file.name;
+                    const reader = new FileReader();
+                    reader.onload = (e) => { uploadedImgData = e.target.result; };
+                    reader.readAsDataURL(file);
+                }
+            });
+
+            modal.querySelector('.modal-close').addEventListener('click', () => overlay.remove());
+
+            // КАСКАДНОЕ УДАЛЕНИЕ ЛОКАЦИИ
+            if (isEdit) {
+                modal.querySelector('.modal-delete').addEventListener('click', (e) => {
+                    e.preventDefault();
+
+                    const confirmOverlay = document.createElement('div');
+                    confirmOverlay.style.position = 'fixed'; confirmOverlay.style.top = '0'; confirmOverlay.style.left = '0';
+                    confirmOverlay.style.width = '100%'; confirmOverlay.style.height = '100%';
+                    confirmOverlay.style.backgroundColor = 'rgba(48, 39, 28, 0.4)';
+                    confirmOverlay.style.zIndex = '1010'; confirmOverlay.style.display = 'flex';
+                    confirmOverlay.style.alignItems = 'center'; confirmOverlay.style.justifyContent = 'center';
+                    confirmOverlay.style.backdropFilter = 'blur(4px)';
+
+                    const confirmModal = document.createElement('div');
+                    confirmModal.className = 'card';
+                    confirmModal.style.width = '360px'; confirmModal.style.padding = '32px';
+                    confirmModal.style.display = 'flex'; confirmModal.style.flexDirection = 'column'; confirmModal.style.gap = '16px';
+                    confirmModal.style.background = '#FFFCF4';
+                    confirmModal.style.textAlign = 'center';
+                    confirmModal.style.boxShadow = '0 12px 48px rgba(74, 55, 40, 0.15)';
+
+                    confirmModal.innerHTML = `
+                        <h3 style="margin: 0; font-size: 20px; color: #1A1A1A;">Удалить локацию?</h3>
+                        <p style="margin: 0; font-size: 14px; color: #4A3728; line-height: 1.5;">
+                            Вы уверены, что хотите удалить <b>«${title}»</b>?<br>Это действие нельзя отменить.
+                        </p>
+                        <div style="display: flex; gap: 12px; justify-content: center; margin-top: 16px;">
+                            <button class="btn btn-secondary btn-sm confirm-cancel">Отмена</button>
+                            <button class="btn btn-primary btn-sm confirm-delete" style="background: #C64343; border-color: #C64343;">Удалить навсегда</button>
+                        </div>
+                    `;
+
+                    confirmModal.querySelector('.confirm-cancel').addEventListener('click', () => confirmOverlay.remove());
+
+                    confirmModal.querySelector('.confirm-delete').addEventListener('click', () => {
+                        existingCard.remove();
+                        confirmOverlay.remove();
+                        overlay.remove();
+                        updateCount();
+                    });
+
+                    confirmOverlay.appendChild(confirmModal);
+                    document.body.appendChild(confirmOverlay);
+                });
+            }
+
+            modal.querySelector('.modal-save').addEventListener('click', () => {
+                const newTitle = modal.querySelector('#loc-name').value || 'Новая локация';
+                const newType = modal.querySelector('#loc-type').value;
+                const newDesc = modal.querySelector('#loc-desc').value || '...';
+                const newRefs = modal.querySelector('#loc-refs').value;
+                const finalImg = uploadedImgData || `https://placehold.co/556x160/4A3728/FFFCF4?text=${encodeURIComponent(newTitle)}`;
+
+                let tagsHTML = '';
+                if(modal.querySelector('#l-sc-01').checked) tagsHTML += '<a href="scene-01.html" class="badge badge-accent scene-link">01</a> ';
+                if(modal.querySelector('#l-sc-02').checked) tagsHTML += '<a href="scene-02.html" class="badge badge-accent scene-link">02</a> ';
+                if(modal.querySelector('#l-sc-03').checked) tagsHTML += '<a href="scene.html" class="badge badge-accent scene-link">03</a> ';
+                if(modal.querySelector('#l-sc-04').checked) tagsHTML += '<a href="scene.html" class="badge badge-accent scene-link">04</a> ';
+                if(modal.querySelector('#l-sc-05').checked) tagsHTML += '<a href="scene.html" class="badge badge-accent scene-link">05</a> ';
+                if(modal.querySelector('#l-sc-06').checked) tagsHTML += '<a href="scene.html" class="badge badge-accent scene-link">06</a> ';
+                if(modal.querySelector('#l-sc-07').checked) tagsHTML += '<a href="scene.html" class="badge badge-accent scene-link">07</a> ';
+                if(modal.querySelector('#l-sc-08').checked) tagsHTML += '<a href="scene.html" class="badge badge-accent scene-link">08</a> ';
+                if(modal.querySelector('#l-sc-09').checked) tagsHTML += '<a href="scene.html" class="badge badge-accent scene-link">09</a> ';
+
+                if (isEdit) {
+                    existingCard.setAttribute('data-refs', newRefs);
+                    existingCard.querySelector('.loc-title').innerText = newTitle;
+                    existingCard.querySelector('.loc-type').innerText = newType;
+                    existingCard.querySelector('.loc-desc').innerText = newDesc;
+                    existingCard.querySelector('.location-image').src = finalImg;
+                    existingCard.querySelector('.loc-scenes').innerHTML = tagsHTML;
+                } else {
+                    const newCard = document.createElement('div');
+                    newCard.className = 'card location-card loc-edit-trigger';
+                    newCard.setAttribute('data-refs', newRefs);
+                    newCard.innerHTML = `
+                        <img src="${finalImg}" class="location-image" alt="${newTitle}">
+                        <div class="location-body">
+                            <h3 class="card-title loc-title" style="margin: 0; font-size: 16px; color: #1A1A1A;">${newTitle}</h3>
+                            <span class="badge badge-accent loc-type" style="align-self:flex-start;">${newType}</span>
+                            <p class="card-desc loc-desc" style="margin: 0; font-size: 13px; color: #4A3728; line-height: 1.5;">${newDesc}</p>
+                            <div class="meta-subtitle" style="margin-top:auto; padding-top: 12px;">СЦЕНЫ</div>
+                            <div class="tag-group loc-scenes" onclick="event.stopPropagation();">
+                                ${tagsHTML}
+                            </div>
+                        </div>
+                    `;
+                    grid.appendChild(newCard);
+                }
+
+                overlay.remove();
+                sortCards();
+                updateCount();
+            });
+
+            overlay.appendChild(modal);
+            document.body.appendChild(overlay);
+        }
+
+        const createBtn = document.getElementById('create-loc-btn');
+        if(createBtn) {
+            createBtn.addEventListener('click', (e) => {
+                e.preventDefault();
+                createLocModal(null);
+            });
+        }
+
+        grid.addEventListener('click', (e) => {
+            const card = e.target.closest('.loc-edit-trigger');
+            if (card && !e.target.closest('.scene-link')) {
+                createLocModal(card);
+            }
+        });
+    });
+</script>
+</body>
+</html>

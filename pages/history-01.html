@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Plotty - История сцены</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Lora:ital,wght@0,400;0,600;1,400&family=Montserrat:wght@400&display=swap"
+          rel="stylesheet">
+    <link rel="stylesheet" href="../css/main.css">
+    <link rel="stylesheet" href="../css/components.css">
+    <style>
+        .sidebar { transition: width 0.3s ease, min-width 0.3s ease, padding 0.3s ease; overflow: hidden; padding-top: 64px !important; }
+        .sidebar.collapsed { width: 0 !important; min-width: 0 !important; padding-left: 0; padding-right: 0; border-right: none; }
+        .toggle-sidebar-btn { position: fixed; left: 24px; top: 24px; z-index: 1000; background: #FFFCF4; border: 1px solid #E8DDC7; border-radius: 6px; padding: 6px 12px; cursor: pointer; color: #4A3728; font-size: 16px; transition: background 0.2s; }
+        .toggle-sidebar-btn:hover { background: #F0DFCE; }
+        .main-content { padding-left: 24px; box-sizing: border-box; }
+
+        .back-to-global { display: flex; align-items: center; gap: 8px; color: #827568; font-size: 12px; font-weight: 500; padding: 16px; text-decoration: none; border-bottom: 1px solid #E8DDC7; transition: color 0.2s, background 0.2s; }
+        .back-to-global:hover { color: #1A1A1A; background: #F5EFE6; }
+
+        .act-toggle { cursor: pointer; display: flex; justify-content: space-between; align-items: center; user-select: none; }
+        .act-toggle:hover { background: #F5EFE6; }
+        .act-content { display: none; }
+        .act-content.expanded { display: block; }
+        .chevron { transition: transform 0.2s; font-size: 10px; color: #827568; }
+        .act-toggle.expanded .chevron { transform: rotate(90deg); }
+
+        .revision-card { transition: all 0.2s ease; border: 1px solid transparent; }
+        .revision-card:hover { border-color: #E8DDC7; background: #F5EFE6; }
+        .revision-card.active { border-color: #904D30; background: #FFF; box-shadow: 0 4px 12px rgba(74, 55, 40, 0.05); }
+
+        .diff-row { padding-left: 12px; transition: background 0.2s; border-left: 3px solid transparent; }
+        .row-added { background-color: #E8F5E9 !important; border-left-color: #4CAF50 !important; }
+        .row-added .line-text { color: #1B5E20 !important; }
+        .row-deleted { background-color: #FFEBEE !important; border-left-color: #F44336 !important; }
+        .row-deleted .line-text { color: #B71C1C !important; text-decoration: line-through; }
+
+        .diff-panels-container { transition: opacity 0.2s ease; }
+    </style>
+</head>
+<body>
+
+<button class="toggle-sidebar-btn" title="Скрыть/показать меню">☰</button>
+
+<div class="app-layout">
+    <aside class="sidebar" id="app-sidebar">
+        <a href="projects.html" class="back-to-global">
+            <span>←</span> К списку проектов
+        </a>
+
+        <div class="sidebar-section-title" style="margin-top: 16px; color: #1A1A1A;">ПОСЛЕДНИЙ МАЯК</div>
+        <nav class="sidebar-nav">
+            <a href="board.html" class="sidebar-item">Доска сюжета</a>
+        </nav>
+
+        <div class="sidebar-divider"></div>
+        <div class="sidebar-section-title" style="color: #904D30;">ИСТОРИЯ ВЕРСИЙ СЦЕНЫ</div>
+        <nav class="sidebar-nav">
+            <div>
+                <div class="sidebar-item act-toggle expanded"><span>I. Возвращение</span> <span class="chevron">▶</span>
+                </div>
+                <div class="sidebar-sub-nav act-content expanded">
+                    <a href="history-01.html" class="sidebar-sub-item active">· 01 · Письмо отца</a>
+                    <a href="history-02.html" class="sidebar-sub-item">· 02 · На причале</a>
+                    <a href="history.html" class="sidebar-sub-item">· 03 · Свет в тумане</a>
+                </div>
+            </div>
+            <div>
+                <div class="sidebar-item act-toggle"><span>II. Тишина</span> <span class="chevron">▶</span></div>
+                <div class="sidebar-sub-nav act-content">
+                    <a href="history.html" class="sidebar-sub-item">· 04 · Закрытая дверь</a>
+                    <a href="history.html" class="sidebar-sub-item">· 05 · Старые записи</a>
+                    <a href="history.html" class="sidebar-sub-item">· 06 · Шторм</a>
+                </div>
+            </div>
+            <div>
+                <div class="sidebar-item act-toggle"><span>III. Новый свет</span> <span class="chevron">▶</span></div>
+                <div class="sidebar-sub-nav act-content">
+                    <a href="history.html" class="sidebar-sub-item">· 07 · Выбор Анны</a>
+                    <a href="history.html" class="sidebar-sub-item">· 08 · Последняя ночь</a>
+                    <a href="history.html" class="sidebar-sub-item">· 09 · Первый луч</a>
+                </div>
+            </div>
+        </nav>
+
+        <div class="sidebar-divider"></div>
+        <div class="sidebar-section-title">БАЗА И КОМАНДА</div>
+        <nav class="sidebar-nav">
+            <a href="characters.html" class="sidebar-item">Персонажи</a>
+            <a href="locations.html" class="sidebar-item">Локации</a>
+            <a href="../participants.html" class="sidebar-item">Участники</a>
+        </nav>
+    </aside>
+
+    <main class="main-content" style="padding-top: 24px; padding-right: 32px; padding-bottom: 100px;">
+        <header class="page-header" style="margin-bottom: 24px;">
+            <div class="header-text">
+                <h1 class="page-title">История сцены</h1>
+                <p class="page-desc">01 · Письмо отца / 2 сохранённых ревизии</p>
+            </div>
+            <a href="scene-01.html" class="btn btn-secondary btn-sm" style="text-decoration: none;">Вернуться к
+                сцене</a>
+        </header>
+
+        <div class="history-layout">
+            <div class="revisions-sidebar">
+                <div class="meta-subtitle" style="margin-bottom: 12px;">РЕВИЗИИ СЦЕНЫ</div>
+
+                <div class="revision-card active">
+                    <div class="rev-header">
+                        <span class="rev-title">Ревизия 2</span>
+                        <span class="rev-date">8 окт., 12:00</span>
+                    </div>
+                    <div class="rev-author">
+                        <div class="avatar bg-1">АС</div>
+                        <span>Анна Соколова</span>
+                    </div>
+                    <div class="rev-desc">Добавлена эмоция Анны</div>
+                    <div class="rev-footer">
+                        <span class="rev-hash">e7b39a1</span>
+                        <span class="badge badge-accent">Текущая</span>
+                    </div>
+                </div>
+
+                <div class="revision-card">
+                    <div class="rev-header">
+                        <span class="rev-title">Ревизия 1</span>
+                        <span class="rev-date">8 окт., 10:15</span>
+                    </div>
+                    <div class="rev-author">
+                        <div class="avatar bg-1">АС</div>
+                        <span>Анна Соколова</span>
+                    </div>
+                    <div class="rev-desc">Первый набросок сцены</div>
+                    <div class="rev-footer">
+                        <span class="rev-hash">1a2b3c4</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="diff-viewer">
+                <div class="card diff-controls-card">
+                    <div class="diff-header-row">
+                        <div class="diff-compare-titles">
+                            <span class="btn btn-secondary btn-sm" style="pointer-events:none;">Старая версия</span>
+                            <span class="compare-arrow">→</span>
+                            <span class="btn btn-secondary btn-sm" id="selected-revision-label"
+                                  style="pointer-events:none; border-color:#904D30; color:#904D30;">Ревизия 2</span>
+                        </div>
+                        <button class="btn btn-primary btn-sm" id="btn-restore">Восстановить</button>
+                    </div>
+                    <div class="meta-divider" style="margin: 0;"></div>
+                    <div class="diff-options-row">
+                        <div style="flex: 1;"></div>
+                        <div class="diff-stats">
+                            <span class="badge badge-success">+ 2 добавлено</span>
+                            <span class="badge badge-danger">− 0 удалено</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="diff-panels-container">
+                    <div class="card diff-panel">
+                        <div class="diff-panel-header">
+                            <h3 class="meta-title">Ревизия 1</h3>
+                            <span class="rev-hash">Анна Соколова · 1a2b3c4</span>
+                        </div>
+                        <div class="meta-divider" style="margin:0;"></div>
+                        <div class="diff-content">
+                            <div class="diff-row"><span class="line-num">01</span>
+                                <div class="line-text">ИНТ. КВАРТИРА АННЫ — ДЕНЬ</div>
+                            </div>
+                            <div class="diff-row"><span class="line-num">02</span>
+                                <div class="line-text">Коробки наполовину собраны. Пылинки танцуют в луче света. АННА
+                                    сидит на полу.
+                                </div>
+                            </div>
+                            <div class="diff-row"><span class="line-num">03</span>
+                                <div class="line-text">Она находит плотный желтоватый конверт.</div>
+                            </div>
+                            <div class="diff-row"><span class="line-num">04</span>
+                                <div class="line-text">АННА: Так вот где ты был всё это время...</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card diff-panel">
+                        <div class="diff-panel-header">
+                            <h3 class="meta-title" id="dynamic-rev-title">Ревизия 2</h3>
+                            <span class="rev-hash" id="dynamic-rev-hash">Анна Соколова · e7b39a1</span>
+                        </div>
+                        <div class="meta-divider" style="margin:0;"></div>
+                        <div class="diff-content">
+                            <div class="diff-row"><span class="line-num">01</span>
+                                <div class="line-text">ИНТ. КВАРТИРА АННЫ — ДЕНЬ</div>
+                            </div>
+                            <div class="diff-row row-added"><span class="line-num">02</span>
+                                <div class="line-text">Коробки наполовину собраны. Пылинки танцуют в луче света. АННА
+                                    сидит на полу, перебирая старые бумаги.
+                                </div>
+                            </div>
+                            <div class="diff-row row-added"><span class="line-num">03</span>
+                                <div class="line-text">Она находит плотный желтоватый конверт. Внутри — письмо и
+                                    выцветшая карта с координатами.
+                                </div>
+                            </div>
+                            <div class="diff-row"><span class="line-num">04</span>
+                                <div class="line-text">АННА</div>
+                            </div>
+                            <div class="diff-row row-added"><span class="line-num">05</span>
+                                <div class="line-text">(шепотом)</div>
+                            </div>
+                            <div class="diff-row"><span class="line-num">06</span>
+                                <div class="line-text">Так вот где ты был всё это время...</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+</div>
+
+<!-- Глобальное прибитое меню снизу -->
+<nav class="bottom-dock">
+    <a href="profile.html" class="dock-item">Профиль</a>
+    <a href="organizations.html" class="dock-item">Организации</a>
+    <a href="projects.html" class="dock-item">Проекты</a>
+    <a href="board.html" class="dock-item active">Доска</a>
+    <a href="characters.html" class="dock-item">База</a>
+    <a href="settings.html" class="dock-item">Настройки</a>
+</nav>
+
+<!-- Уведомление об успешном восстановлении -->
+<div id="toast-restore" class="toast"
+     style="position: fixed; bottom: 80px; right: 24px; background: #3F745C; color: #FFFCF4; padding: 14px 24px; border-radius: 8px; box-shadow: 0 4px 16px rgba(63, 116, 92, 0.2); font-size: 14px; font-weight: 500; transform: translateY(150px); opacity: 0; transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), opacity 0.4s; z-index: 2000; display: flex; align-items: center; gap: 10px;">
+    <span style="font-size: 18px;">✓</span> Ревизия успешно восстановлена
+</div>
+
+<script src="../js/ui.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const actToggles = document.querySelectorAll('.act-toggle');
+        actToggles.forEach(toggle => {
+            toggle.addEventListener('click', () => {
+                toggle.classList.toggle('expanded');
+                const content = toggle.nextElementSibling;
+                if (content.classList.contains('expanded')) {
+                    content.classList.remove('expanded');
+                } else {
+                    content.classList.add('expanded');
+                }
+            });
+        });
+
+        const revisionCards = document.querySelectorAll('.revision-card');
+        const selectedLabel = document.getElementById('selected-revision-label');
+        const diffPanelTitle = document.getElementById('dynamic-rev-title');
+        const diffPanelHash = document.getElementById('dynamic-rev-hash');
+
+        if (revisionCards.length > 0) {
+            revisionCards.forEach(card => {
+                card.style.cursor = 'pointer';
+                card.addEventListener('click', () => {
+                    revisionCards.forEach(c => c.classList.remove('active'));
+                    card.classList.add('active');
+
+                    const revTitle = card.querySelector('.rev-title').innerText;
+                    const revAuthor = card.querySelector('.rev-author span').innerText;
+                    const revHash = card.querySelector('.rev-hash').innerText;
+
+                    if (selectedLabel) selectedLabel.innerText = revTitle;
+                    if (diffPanelTitle) diffPanelTitle.innerText = revTitle;
+                    if (diffPanelHash) diffPanelHash.innerText = `${revAuthor} · ${revHash}`;
+
+                    const panelsContainer = document.querySelector('.diff-panels-container');
+                    if (panelsContainer) {
+                        panelsContainer.style.opacity = '0.3';
+                        setTimeout(() => { panelsContainer.style.opacity = '1'; }, 200);
+                    }
+                });
+            });
+        }
+
+        // Логика кнопки "Восстановить"
+        const restoreBtn = document.getElementById('btn-restore');
+        if (restoreBtn) {
+            restoreBtn.addEventListener('click', () => {
+                restoreBtn.innerText = 'Восстановление...';
+                restoreBtn.style.opacity = '0.7';
+
+                setTimeout(() => {
+                    restoreBtn.innerText = 'Восстановить';
+                    restoreBtn.style.opacity = '1';
+
+                    const toast = document.getElementById('toast-restore');
+                    toast.style.transform = 'translateY(0)';
+                    toast.style.opacity = '1';
+
+                    setTimeout(() => {
+                        toast.style.transform = 'translateY(150px)';
+                        toast.style.opacity = '0';
+                    }, 3000);
+                }, 600);
+            });
+        }
+    });
+</script>
+</body>
+</html>

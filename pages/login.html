@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Plotty - Вход</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Lora&family=Montserrat:wght@400&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../css/main.css">
+    <link rel="stylesheet" href="../css/components.css">
+</head>
+<body>
+
+<div class="hero-container">
+    <!-- Левая часть -->
+    <div class="image-card">
+        <img src="https://placehold.co/610x700/4A3728/FFFCF4?text=Plotty+Login" alt="Обложка Plotty" />
+        <div class="gradient-overlay"></div>
+        <div class="image-card-content">
+            <div class="image-card-title">Истории ждут, когда вы вернётесь.</div>
+            <div class="image-card-desc">Ваши сцены, герои и идеи — на своих местах.</div>
+            <div class="image-card-subtitle">PLOTTY / ПРОСТРАНСТВО ДЛЯ ИСТОРИЙ</div>
+        </div>
+    </div>
+
+    <!-- Правая часть (форма) -->
+    <div class="content-section auth-section">
+        <div class="text-block">
+            <h1 class="main-heading" style="font-size: 34px;">С возвращением</h1>
+            <div class="main-desc" style="font-size: 14px;">Войдите, чтобы продолжить свою историю.</div>
+        </div>
+
+        <!-- Социальная авторизация (Google убран, Яндекс некликабелен) -->
+        <div class="social-auth-block">
+            <div class="social-item">
+                <span class="social-icon yandex">Я</span>
+                <span class="social-text">Продолжить с Яндексом</span>
+            </div>
+        </div>
+
+        <div class="divider-text">
+            <div class="line"></div>
+            <span>или по почте</span>
+            <div class="line"></div>
+        </div>
+
+        <form class="auth-form">
+            <div class="form-group">
+                <label class="form-label">Электронная почта</label>
+                <input type="email" class="form-input" placeholder="anna@tihiykadr.ru">
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">Пароль</label>
+                <input type="password" class="form-input" placeholder="••••••••••••">
+            </div>
+
+            <!-- Блок "Запомнить меня" и восстановления пароля -->
+            <div class="form-options">
+                <label class="checkbox-label">
+                    <input type="checkbox" class="custom-checkbox">
+                    Запомнить меня
+                </label>
+                <a href="#" class="forgot-link">Забыли пароль?</a>
+            </div>
+
+            <button type="submit" class="btn btn-primary btn-block">Войти в Plotty →</button>
+
+            <div class="login-link">
+                Ещё нет аккаунта? <a href="auth.html">Создать аккаунт →</a>
+            </div>
+            <div class="terms-text" style="margin-top: 8px;">
+                Продолжая, вы принимаете <a href="#">условия использования</a> и <a href="#">политику конфиденциальности</a>.
+            </div>
+        </form>
+    </div>
+</div>
+
+<script src="../js/auth.js"></script>
+
+</body>
+</html>
